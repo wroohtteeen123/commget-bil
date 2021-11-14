@@ -28,6 +28,9 @@
 # 好想贴贴（（（（（（
 # 测试中！Washouts it call mom
 
+# 我在想什么 2021-11-14：
+# 好吧，挂了梯子的话，localhost会变呢。
+
 
 # import 列表。
 import urllib.request
@@ -161,7 +164,7 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
 
         database_cursor = database.cursor()  # 添加指针。
 
-        database_do = "INSERT INTO Test1(Username, \
+        database_do = "INSERT INTO siMaNan(Username, \
             Gender, Bio, UID, Level, SayWhat, ULike, SayTime, FileTag) \
                 VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % \
                     (data_username, data_gender, data_bio, data_uid, data_level, data_say_what,
@@ -264,9 +267,11 @@ def creation_new_tab(host_i, user_i, password_i, database_i):   # 这个函数�
 
     database = pymysql.connect(
         host=host_i,
+        port=3306,
         user=user_i,
         password=password_i,
-        database=database_i
+        database=database_i,
+        charset='utf8'
     )  # 连接数据库。输入各种参数。
 
     database_cursor = database.cursor()  # 添加指针。
@@ -337,11 +342,11 @@ if __name__ == '__main__':
     database_user = "root"          # 数据库的用户名。
     database_password = "root"      # 数据库，用户的密码。
     database_database = "PyTest"    # 数据库名，你看着办吧。
-    table_name = "Test2"            # 表单名称，建议修改。
+    table_name = "simanan"            # 表单名称，建议修改。
 
-    # creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
+    creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
 
-    # get_full_video(70527663)  # 把这个UP主的所有视频下的评论一起下载。
+    # get_full_video(612492134)  # 把这个UP主的所有视频下的评论一起下载。
 
     # get_full_pages(bv_to_av("BV1Cg411K7wJ"))  # 下载这个视频的全部评论。
 
