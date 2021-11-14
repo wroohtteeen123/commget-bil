@@ -136,7 +136,7 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
 
         database_cursor = database.cursor()  # 添加指针。
 
-        database_do = "INSERT INTO siMaNan(Username, \
+        database_do = "INSERT INTO Test02(Username, \
             Gender, Bio, UID, Level, SayWhat, ULike, SayTime, FileTag) \
                 VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % \
                     (data_username, data_gender, data_bio, data_uid, data_level, data_say_what,
@@ -314,11 +314,11 @@ if __name__ == '__main__':      # 这个是程序开始运行的地方。
     database_user = "root"          # 数据库的用户名。
     database_password = "root"      # 数据库，用户的密码。
     database_database = "PyTest"    # 数据库名，你看着办吧。
-    table_name = "simanan"            # 表单名称，建议修改。
+    table_name = "Test02"            # 表单名称，建议修改。
 
     # creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
 
-    # get_full_video(612492134)  # 把这个UP主的所有视频下的评论一起下载。
+    # get_full_video(289867)  # 把这个UP主的所有视频下的评论一起下载。
 
     # get_full_pages(bv_to_av("BV1Cg411K7wJ"))  # 下载这个视频的全部评论。
 
@@ -327,5 +327,5 @@ if __name__ == '__main__':      # 这个是程序开始运行的地方。
 # 上面的第一条主色调的就是创建一个新表，然后参数的话就在上面。
 # 然后第二条就是把这个用户的所有视频里的评论都存到数据库里，然后这个数据库就是顶上的参数的那个数据库。
 # 然后第三个这个指令，就是把这一个视频里所有的评论添加到你顶上的那个数据库里。
-
-# 好吧，我说什么，好怪欧。。。
+# 上面的表名记得改：data_process_and_save(data_file_tag)这个里面的
+# 好吧，我在说什么，好怪欧。。。
