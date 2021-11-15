@@ -142,7 +142,7 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
                     (data_username, data_gender, data_bio, data_uid, data_level, data_say_what,
                     data_u_like, data_say_time, data_file_tag)
 
-        try:
+        try:        # 尝试运行。
 
             database_cursor.execute(database_do)    # 执行sql。
             database.commit()
