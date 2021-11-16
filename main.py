@@ -18,8 +18,7 @@ import secrets
 import pymysql
 
 
-# 全局取消验证。（其实我也不知道这句话是干嘛的（反正删掉了就不能用了（报错怎么办呢
-ssl._create_default_https_context = ssl._create_unverified_context
+ssl._create_default_https_context = ssl._create_unverified_context  # 全局取消验证。（其实我也不知道这句话是干嘛的（反正删掉了就不能用了（报错怎么办呢
 
 
 #   这下面是全局变量。主要是一些空的。
@@ -33,15 +32,25 @@ table_name = ""             # 数据库里的表名。
 # 各种函数。
 def get_single_page(page_url):  # 用于获得单个网络页面的函数。
 
+    block_page = {"code": 0, "message": "0", "ttl": 1, "data": {"replies": []}}
     header_bunker = {
         "Accept-Encoding": "gzip, deflate",
         "User-Agent": "Mozilla/5.0 (Macintosh; Apple silicon Mac OS X 12_1_0) Gecko/20100101 Firefox/94.0"
     }  # 伪装成浏览器，也可以加一些别的。
+
     page_request = urllib.request.Request(url=page_url, headers=header_bunker)  # 把url地址和头部打包。
-    page_data_raw = urllib.request.urlopen(page_request)              # 开个网页，把返回的内容传给page_data_raw。
-    page_data_mar = page_data_raw.read()                              # 把网页返回的所有数据读出到page_data_mar。
-    page_data_deco = gzip.decompress(page_data_mar).decode("utf-8")   # 将mar的数据解码成utf-8，存到deco。
-    return page_data_deco                                             # 将网页解码得到的数据返回给函数。
+    page_data_raw = urllib.request.urlopen(page_request)                    # 开个网页，把返回的内容传给page_data_raw。
+    page_data_mar = page_data_raw.read()                                    # 把网页返回的所有数据读出到page_data_mar。
+
+    try:
+
+        page_data_deco = gzip.decompress(page_data_mar).decode("utf-8")     # 将mar的数据解码成utf-8，存到deco。
+        return page_data_deco  # 将网页解码得到的数据返回给函数。
+
+    except:
+
+        print("ERR-有点问题。")
+        return str(block_page)
 
 
 def get_full_pages(av_pin):    # 函数，是用来把这个视频里的所有评论提取分析出来其实并不是吧，嗯，也算是吧。
@@ -136,10 +145,10 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
 
         database_cursor = database.cursor()  # 添加指针。
 
-        database_do = "INSERT INTO Test02(Username, \
+        database_do = "INSERT INTO %s(Username, \
             Gender, Bio, UID, Level, SayWhat, ULike, SayTime, FileTag) \
                 VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % \
-                    (data_username, data_gender, data_bio, data_uid, data_level, data_say_what,
+                    (table_name, data_username, data_gender, data_bio, data_uid, data_level, data_say_what,
                     data_u_like, data_say_time, data_file_tag)
 
         try:        # 尝试运行。
@@ -167,7 +176,14 @@ def data_usability_test(name_local_doc, mode):                                # 
     file_open_for_end = open(name_local_doc, "r")                       # 打开上一个文件用于检验。
     file_content_str_for_end = file_open_for_end.read()                 # 把内容写到file_content_str_for_end。
     file_open_for_end.close()   # 关闭打开的文件。
-    file_content_dict_for_end = json.loads(file_content_str_for_end)    # 把Json文件转换为字典。
+
+    try:
+
+        file_content_dict_for_end = json.loads(file_content_str_for_end)    # 把Json文件转换为字典。
+
+    except:
+
+        return False
 
     if mode == "c":     # 评论检测
 
@@ -258,6 +274,7 @@ def creation_new_tab(host_i, user_i, password_i, database_i):   # 这个函数�
 
 
 def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有视频的AV，BV，还有别的信息提取出来，算是吧。
+
     page_tag = 1
     break_tag = 0
 
@@ -282,6 +299,7 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
             file_content_dict = json.loads(file_content_str)  # 把Json文件转换为字典。
 
             if len(file_content_dict["data"]["list"]["vlist"]) < 30:
+
                 break_tag = 1
 
             for user_temp_id in range(len(file_content_dict["data"]["list"]["vlist"])):  # 检测有N个回复，循环N次。
@@ -314,11 +332,11 @@ if __name__ == '__main__':      # 这个是程序开始运行的地方。
     database_user = "root"          # 数据库的用户名。
     database_password = "root"      # 数据库，用户的密码。
     database_database = "PyTest"    # 数据库名，你看着办吧。
-    table_name = "Test02"            # 表单名称，建议修改。
+    table_name = "bai95402875"            # 表单名称，建议修改。
 
-    # creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
+    creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
 
-    # get_full_video(289867)  # 把这个UP主的所有视频下的评论一起下载。
+    get_full_video(95402875)  # 把这个UP主的所有视频下的评论一起下载。
 
     # get_full_pages(bv_to_av("BV1Cg411K7wJ"))  # 下载这个视频的全部评论。
 
