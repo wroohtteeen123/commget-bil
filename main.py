@@ -209,6 +209,17 @@ def data_usability_test(name_local_doc, mode):                                # 
 
             return True  # 有评论返回真。
 
+    if mode == "f":     # 视频检测
+
+        if len(file_content_dict_for_end["data"]["list"]) == 0:  # 获取到的评论数量检测。
+
+            os.remove(name_local_doc)  # 删除文件。
+            return False  # 没有评论返回假。
+
+        else:
+
+            return True  # 有评论返回真。
+
 
 def bv_to_av(bv):   # 不知道从哪儿偷来的代码,忘了。。。
 
@@ -291,6 +302,7 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
         if not data_usability_test(name_local_doc, "v"):  # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
 
             print("BRE-现在应该是完全结束了，我猜是这样，也可能不是这样，我建议你检查一下，好吧，再见。")
+            print("-" * 40)
             break
 
         else:
@@ -345,7 +357,67 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
 
             if break_tag == 1:
 
+                print("BRE-这一步结束了，我猜是这样。")
+                print("-" * 40)
+                break
+
+        page_tag += 1  # 下一个页面。
+        time.sleep(0.5 + (secrets.randbelow(40000) / 80000))    # 生成随机0.50-1.00秒以内的数字。。
+
+
+def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的所有用户。
+
+    page_tag = 1
+    break_tag = 0
+
+    while True:
+
+        url = "https://api.bilibili.com/x/relation/followings?vmid=%d&pn=%d" % (uid_upper, page_tag)
+        data_download = get_single_page(url)  # 使用函数获得页的内容，再给到data_download。
+        name_local_doc = "o-saveData_followUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
+        save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
+        print("Following: ", page_tag)  # 打印页面号码。
+
+        if not data_usability_test(name_local_doc, "f"):  # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
+
+            print("BRE-现在应该是完全结束了，只能访问前250个关注，也可能不是这样，我建议你检查一下，好吧，再见。")
+            print("-" * 40)
+            break
+
+        else:
+
+            # print("Nice")
+            # break
+
+            file_open = open(name_local_doc, "r")  # 打开本地保存的文件。
+            file_content_str = file_open.read()  # 把内容写到file_content_str。
+            file_open.close()  # 关闭文件。
+            file_content_dict = json.loads(file_content_str)  # 把Json文件转换为字典。
+
+            if len(file_content_dict["data"]["list"]) < 50:
+
+                break_tag = 1
+
+            for user_temp_id in range(len(file_content_dict["data"]["list"])):  # 检测有N个回复，循环N次。
+
+                data_mid = file_content_dict["data"]["list"][user_temp_id]["mid"]
+                data_uname = file_content_dict["data"]["list"][user_temp_id]["uname"]
+                data_sign = file_content_dict["data"]["list"][user_temp_id]["sign"]
+
+                print(data_mid)
+                print(data_uname)
+                print(data_sign)
+
+                print("-"*40)
+                NeedHelp.need_help()
+                print("-" * 40)
+
+                get_full_video(data_mid)
+
+            if break_tag == 1:
+
                 print("BRE-现在应该是完全结束了，我猜是这样，也可能不是这样，我建议你检查一下，好吧，拜拜。")
+                print("-" * 40)
                 break
 
         page_tag += 1  # 下一个页面。
@@ -359,16 +431,19 @@ if __name__ == '__main__':      # 这个是程序开始运行的地方。
     database_user = "root"          # 数据库的用户名。
     database_password = "root"      # 数据库，用户的密码。
     database_database = "PyTest"    # 数据库名，你看着办吧。
-    table_name = "lihai477328270"            # 表单名称，建议修改。
+    table_name = "l401814844"            # 表单名称，建议修改。
 
     creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
 
-    get_full_video(477328270)  # 把这个UP主的所有视频下的评论一起下载。
+    get_full_follow(401814844)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
+
+    # get_full_video(477328270)  # 把这个UP主的所有视频下的评论一起下载。
 
     # get_full_pages(bv_to_av("BV1Cg411K7wJ"))  # 下载这个视频的全部评论。
 
     pass
 
+# 已过时==>
 # 上面的第一条主色调的就是创建一个新表，然后参数的话就在上面。
 # 然后第二条就是把这个用户的所有视频里的评论都存到数据库里，然后这个数据库就是顶上的参数的那个数据库。
 # 然后第三个这个指令，就是把这一个视频里所有的评论添加到你顶上的那个数据库里。
