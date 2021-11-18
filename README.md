@@ -1,4 +1,6 @@
-# Commget-Bil
+# Commget-Bil:
+
+![Image text](assets/github_commget-bil_logo.png)
 
 ## 这是什么？
 
