@@ -431,15 +431,15 @@ if __name__ == '__main__':      # 这个是程序开始运行的地方。
     database_user = "root"          # 数据库的用户名。
     database_password = "root"      # 数据库，用户的密码。
     database_database = "PyTest"    # 数据库名，你看着办吧。
-    table_name = "TestSample78039600"            # 表单名称，建议修改。
+    table_name = "KKLLMMJJ"    # 表单名称，建议修改。
 
     # creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
 
-    # get_full_follow(78039600)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
+    # get_full_follow(123456789)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
 
-    # get_full_video(477328270)  # 把这个UP主的所有视频下的评论一起下载。
+    # get_full_video(123456789)  # 把这个UP主的所有视频下的评论一起下载。
 
-    # get_full_pages(bv_to_av("BV1Cg411K7wJ"))  # 下载这个视频的全部评论。
+    # get_full_pages(bv_to_av("BVKenenNe"))  # 下载这个视频的全部评论。
 
     pass
 
