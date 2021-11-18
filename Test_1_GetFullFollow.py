@@ -16,7 +16,7 @@ import json
 import secrets
 import pymysql
 ssl._create_default_https_context = ssl._create_unverified_context  # 全局取消验证。（其实我也不知道这句话是干嘛的（反正删掉了就不能用了（报错怎么办呢
-import NeedHelp
+import Test_3_NeedHelp
 
 
 def get_single_page(page_url):  # 用于获得单个网络页面的函数。
@@ -153,4 +153,4 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
         time.sleep(0.5 + (secrets.randbelow(40000) / 80000))    # 生成随机0.50-1.00秒以内的数字。。
 
 # get_full_follow(289867)
-NeedHelp.need_help()
+Test_3_NeedHelp.need_help()

@@ -4,7 +4,7 @@
 # @File : Test_2.py     🫀
 # @Software : PyCharm   💾
 
-import NeedHelp
+import Test_3_NeedHelp
 import time
 
 print("━"*65)
