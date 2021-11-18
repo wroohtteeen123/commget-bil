@@ -1,6 +1,6 @@
 # Commget-Bil:
 
-![Image text](assets/github_commget-bil_logo.png)
+![Image_Commget-Bil](assets/github_commget-bil_logo.png)
 
 ## 这是什么？
 
