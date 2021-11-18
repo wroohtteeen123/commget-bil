@@ -35,3 +35,5 @@
     import urllib.parse
     import gzip
     import pymysql
+
+    from pyfiglet import Figlet
