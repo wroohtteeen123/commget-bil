@@ -536,12 +536,6 @@ def boot_func():
 # main.
 if __name__ == '__main__':      # 这个是程序开始运行的地方。
 
-    # database_host = ""        # 数据库的位置，现在是本地。
-    # database_user = ""        # 数据库的用户名。
-    # database_password = ""    # 数据库，用户的密码。
-    # database_database = ""   # 数据库名，你看着办吧。
-    # table_name = ""           # 表单名称，建议修改。
-
     # database_host = "localhost"     # 数据库的位置，现在是本地。
     # database_user = "root"          # 数据库的用户名。
     # database_password = "root"      # 数据库，用户的密码。
