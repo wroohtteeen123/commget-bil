@@ -1,3 +1,10 @@
+# -*- coding = utf-8 -*-
+# @Time : 2021-11-16    ⏰
+# @Author : P.B.A.S     🍥
+# @File : NeedHelp.py   🫀
+# @Software : PyCharm   💾
+
+
 import random
 
 

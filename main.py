@@ -377,6 +377,7 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
         data_download = get_single_page(url)  # 使用函数获得页的内容，再给到data_download。
         name_local_doc = "o-saveData_followUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
+
         print("Following: ", page_tag)  # 打印页面号码。
 
         if not data_usability_test(name_local_doc, "f"):  # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
@@ -485,12 +486,14 @@ def boot_func():
     else:
 
         print("ERR-请确认输入(y/n)。")
+
         print("3s_exit()")
         time.sleep(1)
         print("2s_exit()")
         time.sleep(1)
         print("1s_exit()")
         time.sleep(1)
+
         exit()
 
     creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
@@ -516,12 +519,14 @@ def boot_func():
     else:
 
         print("ERR-请确认输入(p/v/f)。")
+
         print("3s_exit()")
         time.sleep(1)
         print("2s_exit()")
         time.sleep(1)
         print("1s_exit()")
         time.sleep(1)
+
         exit()
 
     print("━" * 65)
@@ -541,14 +546,13 @@ if __name__ == '__main__':      # 这个是程序开始运行的地方。
     # database_user = "root"          # 数据库的用户名。
     # database_password = "root"      # 数据库，用户的密码。
     # database_database = "PyTest"    # 数据库名，你看着办吧。
+
     # table_name = "KKLLMMJJ"    # 表单名称，建议修改。
 
     # creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
 
     # get_full_follow(123456789)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
-
     # get_full_video(123456789)  # 把这个UP主的所有视频下的评论一起下载。
-
     # get_full_pages(bv_to_av("BVKenenNe"))  # 下载这个视频的全部评论。
 
     boot_func()
