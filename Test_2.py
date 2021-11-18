@@ -51,7 +51,37 @@ elif is_custom_database_input == "n":
     database_database = "PyTest"    # 数据库名，你看着办吧。
 
 else:
+
     print("ERR-请确认输入(y/n)。")
+    print("3s_exit()")
+    time.sleep(1)
+    print("2s_exit()")
+    time.sleep(1)
+    print("1s_exit()")
+    time.sleep(1)
+    exit()
+
+if ot_input == "p":
+
+    print("输入BV号(str)：")
+    temp_p = input()
+    get_full_pages(bv_to_av("BVKenenNe"))  # 下载这个视频的全部评论。
+
+elif ot_input == "v":
+
+    print("输入用户号码(int)：")
+    temp_v = input()
+    get_full_video(temp_v)  # 把这个UP主的所有视频下的评论一起下载。
+
+elif ot_input == "f":
+
+    print("输入用户号码(int)：")
+    temp_f = input()
+    get_full_follow(temp_f)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
+
+else:
+
+    print("ERR-请确认输入(p/v/f)。")
     print("3s_exit()")
     time.sleep(1)
     print("2s_exit()")

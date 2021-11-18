@@ -277,6 +277,7 @@ def creation_new_tab(host_i, user_i, password_i, database_i):   # 这个函数�
 
     database_cursor = database.cursor()  # 添加指针。
     database_do = "DROP TABLE IF EXISTS %s" % table_name  # 命令新建表格。
+    # print(database_do)
     database_cursor.execute(database_do)  # 执行命令。
 
     database_do = "CREATE TABLE %s (Username  VARCHAR(100) NOT NULL, Gender  VARCHAR(100), Bio VARCHAR(500), UID INT UNSIGNED NOT NULL, Level INT UNSIGNED NOT NULL, SayWhat VARCHAR(3000) NOT NULL, ULike INT, SayTime DATETIME NOT NULL, FileTag VARCHAR(500) NOT NULL )" % table_name
@@ -424,14 +425,123 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
         time.sleep(0.5 + (secrets.randbelow(40000) / 80000))    # 生成随机0.50-1.00秒以内的数字。。
 
 
+def boot_func():
+
+    global database_host
+    global database_user
+    global database_password
+    global database_database
+    global table_name
+
+    print("━" * 65)
+    print("""  ____                                     _        ____  _ _ 
+ / ___|___  _ __ ___  _ __ ___   __ _  ___| |_     | __ )(_) |
+| |   / _ \| '_ ` _ \| '_ ` _ \ / _` |/ _ \ __|____|  _ \| | |
+| |__| (_) | | | | | | | | | | | (_| |  __/ ||_____| |_) | | |
+ \____\___/|_| |_| |_|_| |_| |_|\__, |\___|\__|    |____/|_|_|
+                                |___/                         """)
+    print("━" * 65)
+
+    print("   欢迎使用这个程序！", end="  ")
+    print("请根据提示选择模式！", end=" ")
+    NeedHelp.need_help()
+
+    print("━" * 65)
+
+    print("｜单个视频的评论： p ", end="｜")
+    print("单个用户的视频： v ", end="｜")
+    print("用户关注的用户： f ", end="｜\n")
+
+    print("━" * 65)
+
+    print("输入模式(p/v/f)：", end="")
+    ot_input = input()
+    print("输入一个表名(str)：", end="")
+    table_name = input()
+    print("需要自定义数据库连接吗(y/n)：", end="")
+    is_custom_database_input = input()
+
+    if is_custom_database_input == "y":
+
+        print("-" * 40)
+        print("Host(localhost):")
+        database_host = input()
+        print("User(root):")
+        database_user = input()
+        print("Password(root):")
+        database_password = input()
+        print("Database(PyTest):")
+        database_database = input()
+        print("-" * 40)
+
+    elif is_custom_database_input == "n":
+
+        print("使用默认设置。")
+        database_host = "localhost"  # 数据库的位置，现在是本地。
+        database_user = "root"  # 数据库的用户名。
+        database_password = "root"  # 数据库，用户的密码。
+        database_database = "PyTest"  # 数据库名，你看着办吧。
+
+    else:
+
+        print("ERR-请确认输入(y/n)。")
+        print("3s_exit()")
+        time.sleep(1)
+        print("2s_exit()")
+        time.sleep(1)
+        print("1s_exit()")
+        time.sleep(1)
+        exit()
+
+    creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
+
+    if ot_input == "p":
+
+        print("输入BV号(str)：")
+        temp_p = input()
+        get_full_pages(bv_to_av(temp_p))  # 下载这个视频的全部评论。
+
+    elif ot_input == "v":
+
+        print("输入用户号码(int)：")
+        temp_v = input()
+        get_full_video(temp_v)  # 把这个UP主的所有视频下的评论一起下载。
+
+    elif ot_input == "f":
+
+        print("输入用户号码(int)：")
+        temp_f = input()
+        get_full_follow(temp_f)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
+
+    else:
+
+        print("ERR-请确认输入(p/v/f)。")
+        print("3s_exit()")
+        time.sleep(1)
+        print("2s_exit()")
+        time.sleep(1)
+        print("1s_exit()")
+        time.sleep(1)
+        exit()
+
+    print("━" * 65)
+    time.sleep(2)
+
+
 # main.
 if __name__ == '__main__':      # 这个是程序开始运行的地方。
 
-    database_host = "localhost"     # 数据库的位置，现在是本地。
-    database_user = "root"          # 数据库的用户名。
-    database_password = "root"      # 数据库，用户的密码。
-    database_database = "PyTest"    # 数据库名，你看着办吧。
-    table_name = "KKLLMMJJ"    # 表单名称，建议修改。
+    # database_host = ""        # 数据库的位置，现在是本地。
+    # database_user = ""        # 数据库的用户名。
+    # database_password = ""    # 数据库，用户的密码。
+    # database_database = ""   # 数据库名，你看着办吧。
+    # table_name = ""           # 表单名称，建议修改。
+
+    # database_host = "localhost"     # 数据库的位置，现在是本地。
+    # database_user = "root"          # 数据库的用户名。
+    # database_password = "root"      # 数据库，用户的密码。
+    # database_database = "PyTest"    # 数据库名，你看着办吧。
+    # table_name = "KKLLMMJJ"    # 表单名称，建议修改。
 
     # creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
 
@@ -440,6 +550,8 @@ if __name__ == '__main__':      # 这个是程序开始运行的地方。
     # get_full_video(123456789)  # 把这个UP主的所有视频下的评论一起下载。
 
     # get_full_pages(bv_to_av("BVKenenNe"))  # 下载这个视频的全部评论。
+
+    boot_func()
 
     pass
 
