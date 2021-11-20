@@ -508,23 +508,24 @@ def boot_func():
         exit()
 
     creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
+    print("连接成功。")
 
     if ot_input == "p":
 
         print("输入BV号(str)：")
-        temp_p = input()
+        temp_p = int(input())
         get_full_pages(bv_to_av(temp_p))  # 下载这个视频的全部评论。
 
     elif ot_input == "v":
 
         print("输入用户号码(int)：")
-        temp_v = input()
+        temp_v = int(input())
         get_full_video(temp_v)  # 把这个UP主的所有视频下的评论一起下载。
 
     elif ot_input == "f":
 
         print("输入用户号码(int)：")
-        temp_f = input()
+        temp_f = int(input())
         get_full_follow(temp_f)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
 
     else:
@@ -580,25 +581,25 @@ def what_day():
 
 def show_window_transgender():
 
-    root = Tk()
+    r_swt = Tk()
 
-    root.title("Transgender")
+    r_swt.title("TDoR")
 
-    Button(root, text="跨性别死难者纪念日", bd = 15).pack()
+    Button(r_swt, text="跨性别死难者纪念日", bd=15).pack()
 
-    Label(root, text=" " * 60, bg="light blue").pack()
-    Label(root, text=" " * 60, bg="pink").pack()
-    Label(root, text=" " * 60, bg="white").pack()
-    Label(root, text=" " * 60, bg="pink").pack()
-    Label(root, text=" " * 60, bg="light blue").pack()
+    Label(r_swt, text=" " * 60, bg="light blue").pack()
+    Label(r_swt, text=" " * 60, bg="pink").pack()
+    Label(r_swt, text=" " * 60, bg="white").pack()
+    Label(r_swt, text=" " * 60, bg="pink").pack()
+    Label(r_swt, text=" " * 60, bg="light blue").pack()
 
-    Label(root, text="").pack()
+    Label(r_swt, text="").pack()
 
-    Label(root, text="悼念被谋杀的跨性别者🕯").pack()
+    Label(r_swt, text="悼念被谋杀的跨性别者🕯").pack()
 
-    Label(root, text=" "* 70).pack()
+    Label(r_swt, text=" " * 70).pack()
 
-    root.mainloop()
+    r_swt.mainloop()
 
 
 # main.
@@ -615,7 +616,7 @@ if __name__ == '__main__':      # 这个是程序开始运行的地方。
 
     # get_full_follow(123456789)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
     # get_full_video(123456789)  # 把这个UP主的所有视频下的评论一起下载。
-    # get_full_pages(bv_to_av("BVKenenNe"))  # 下载这个视频的全部评论。
+    # get_full_pages(bv_to_av("BVXNe"))  # 下载这个视频的全部评论。
 
     what_day()
     boot_func()
