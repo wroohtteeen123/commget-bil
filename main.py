@@ -151,8 +151,8 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
         database_do = "INSERT INTO %s(Username, \
             Gender, Bio, UID, Level, SayWhat, ULike, SayTime, FileTag) \
                 VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % \
-                    (table_name, data_username, data_gender, data_bio, data_uid, data_level, data_say_what,
-                    data_u_like, data_say_time, data_file_tag)
+                    (table_name, data_username, data_gender, data_bio, data_uid, data_level,
+                     data_say_what, data_u_like, data_say_time, data_file_tag)
 
         try:        # 尝试运行。
 

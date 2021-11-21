@@ -15,9 +15,9 @@ def show_window_transgender():
 
     root = Tk()
 
-    root.title("Transgender")
+    root.title("TDoR")
 
-    Button(root, text="跨性别死难者纪念日", bd = 15).pack()
+    Button(root, text="跨性别死难者纪念日", bd=15).pack()
 
     Label(root, text=" " * 60, bg="light blue").pack()
     Label(root, text=" " * 60, bg="pink").pack()
