@@ -29,9 +29,10 @@ def show_window_transgender():
 
     Label(root, text="悼念被谋杀的跨性别者🕯").pack()
 
-    Label(root, text=" "* 70).pack()
+    Label(root, text=" " * 70).pack()
 
     root.mainloop()
 
 
 what_day()
+show_window_transgender()
