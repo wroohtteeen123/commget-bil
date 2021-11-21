@@ -64,10 +64,10 @@ def get_full_pages(av_pin):    # 函数，是用来把这个视频里的所有�
 
         url = "https://api.bilibili.com/x/v2/reply?pn=%d&type=1&oid=%d&sort=2" % (page_tag, av_pin)
         data_download = get_single_page(url)                                    # 使用函数获得页的内容，再给到data_download。
-        name_local_doc = "o-saveData_Av-%d_Page-%d.json" % (av_pin, page_tag)   # 这是保存在本地的网页文件的名字或者是位置。
+        name_local_doc = "./cache/av/o-saveData_Av-%d_Page-%d.json" % (av_pin, page_tag)   # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)                        # 使用函数，保存页的内容。
         print("PageTag: ", page_tag)                        # 打印页面号码。
-        time.sleep(0.5 + (secrets.randbelow(40000) / 80000))    # 生成随机0.50-1.00秒以内的数字。。
+        time.sleep(0.4 + (secrets.randbelow(3000) / 10000))    # 生成随机0.50-1.00秒以内的数字。。
 
         if not data_usability_test(name_local_doc, "c"):     # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
 
@@ -297,7 +297,7 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
 
         url = "https://api.bilibili.com/x/space/arc/search?mid=%d&ps=30&tid=0&pn=%d" % (uid_upper, page_tag)
         data_download = get_single_page(url)  # 使用函数获得页的内容，再给到data_download。
-        name_local_doc = "o-saveData_upperUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
+        name_local_doc = "./cache/upperuid/o-saveData_upperUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
         print("Video: ", page_tag)  # 打印页面号码。
 
@@ -364,7 +364,7 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
                 break
 
         page_tag += 1  # 下一个页面。
-        time.sleep(0.5 + (secrets.randbelow(40000) / 80000))    # 生成随机0.50-1.00秒以内的数字。。
+        time.sleep(0.4 + (secrets.randbelow(3000) / 10000))    # 生成随机0.50-1.00秒以内的数字。。
 
 
 def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的所有用户。
@@ -376,7 +376,7 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
 
         url = "https://api.bilibili.com/x/relation/followings?vmid=%d&pn=%d" % (uid_upper, page_tag)
         data_download = get_single_page(url)  # 使用函数获得页的内容，再给到data_download。
-        name_local_doc = "o-saveData_followUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
+        name_local_doc = "./cache/followuid/o-saveData_followUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
 
         print("Following: ", page_tag)  # 打印页面号码。
@@ -424,7 +424,7 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
                 break
 
         page_tag += 1  # 下一个页面。
-        time.sleep(0.5 + (secrets.randbelow(40000) / 80000))    # 生成随机0.50-1.00秒以内的数字。。
+        time.sleep(0.4 + (secrets.randbelow(3000) / 10000))    # 生成随机0.50-1.00秒以内的数字。。
 
 
 def boot_func():
@@ -476,13 +476,13 @@ def boot_func():
     if is_custom_database_input == "y":
 
         print("-" * 40)
-        print("Host(localhost):")
+        print("Host(localhost):", end="")
         database_host = input()
-        print("User(root):")
+        print("User(root):", end="")
         database_user = input()
-        print("Password(root):")
+        print("Password(root):", end="")
         database_password = input()
-        print("Database(PyTest):")
+        print("Database(PyTest):", end="")
         database_database = input()
         print("-" * 40)
 
@@ -512,19 +512,19 @@ def boot_func():
 
     if ot_input == "p":
 
-        print("输入BV号(str)：")
+        print("输入BV号(str)：", end="")
         temp_p = int(input())
         get_full_pages(bv_to_av(temp_p))  # 下载这个视频的全部评论。
 
     elif ot_input == "v":
 
-        print("输入用户号码(int)：")
+        print("输入用户号码(int)：", end="")
         temp_v = int(input())
         get_full_video(temp_v)  # 把这个UP主的所有视频下的评论一起下载。
 
     elif ot_input == "f":
 
-        print("输入用户号码(int)：")
+        print("输入用户号码(int)：", end="")
         temp_f = int(input())
         get_full_follow(temp_f)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
 
@@ -559,6 +559,10 @@ def need_help():  # 帮助！
 
         s_list = ["跨性别者", ]
 
+    elif day_time == 501:
+
+        s_list = ["民间组织", "政治领袖", "亚洲移民", "美洲移民", "欧洲移民", "无产阶级", "底层农民", "游击队员", "民主人士", "技术工人"]
+
     else:
 
         s_list = ["可怜儿童", "少数群体", "国家官员", "民间组织", "残疾警官", "跨性别者", "同性恋者", "异性恋者", "无性恋者", "双性恋者",
@@ -577,6 +581,12 @@ def what_day():
     if day_time == 1120:
 
         show_window_transgender()
+
+    if day_time == 501:
+
+        print("━" * 65)
+        print("今天是国际示威游行日。")
+        print("━" * 65)
 
 
 def show_window_transgender():
