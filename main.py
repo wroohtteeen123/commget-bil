@@ -513,7 +513,7 @@ def boot_func():
     if ot_input == "p":
 
         print("输入BV号(str)：", end="")
-        temp_p = int(input())
+        temp_p = input()
         get_full_pages(bv_to_av(temp_p))  # 下载这个视频的全部评论。
 
     elif ot_input == "v":
