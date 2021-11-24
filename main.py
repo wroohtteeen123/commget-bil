@@ -42,7 +42,22 @@ def get_single_page(page_url):  # 用于获得单个网络页面的函数。
         "User-Agent": "Mozilla/5.0 (Macintosh; Apple silicon Mac OS X 12_1_0) Gecko/20100101 Firefox/94.0"
     }  # 伪装成浏览器，也可以加一些别的。
 
-    page_request = urllib.request.Request(url=page_url, headers=header_bunker)  # 把url地址和头部打包。
+    try:
+
+        page_request = urllib.request.Request(url=page_url, headers=header_bunker)  # 把url地址和头部打包。
+
+    except urllib.error.HTTPError:
+
+        try:
+
+            time.sleep(10)
+            page_request = urllib.request.Request(url=page_url, headers=header_bunker)
+            print("ERR-错误。")
+
+        except urllib.error.HTTPError:
+
+            print("ERR-未知错误。")
+
     page_data_raw = urllib.request.urlopen(page_request)                    # 开个网页，把返回的内容传给page_data_raw。
     page_data_mar = page_data_raw.read()                                    # 把网页返回的所有数据读出到page_data_mar。
 
@@ -467,15 +482,13 @@ def boot_func():
 
     print("━" * 65)
 
-    print("   欢迎使用这个程序！", end="  ")
-    print("请根据提示选择模式！", end=" ")
-    need_help()
+    t_text_1 = "欢迎使用这个程序!请根据提示选择模式!" + str(need_help(True))
+    print("{: ^47s}".format(str(t_text_1)))
 
     print("━" * 65)
 
-    print("｜单个视频的评论： p ", end="｜")
-    print("单个用户的视频： v ", end="｜")
-    print("用户关注的用户： f ", end="｜\n")
+    t_text_2 = "|单个视频的评论:p|单个用户的视频:v|用户关注的用户:f|"
+    print("{: ^51s}".format(str(t_text_2)))
 
     print("━" * 65)
 
@@ -527,18 +540,24 @@ def boot_func():
 
         print("输入BV号(str)：", end="")
         temp_p = input()
+
+        print("━" * 65)
         get_full_pages(bv_to_av(temp_p))  # 下载这个视频的全部评论。
 
     elif ot_input == "v":
 
         print("输入用户号码(int)：", end="")
         temp_v = int(input())
+
+        print("━" * 65)
         get_full_video(temp_v)  # 把这个UP主的所有视频下的评论一起下载。
 
     elif ot_input == "f":
 
         print("输入用户号码(int)：", end="")
         temp_f = int(input())
+
+        print("━" * 65)
         get_full_follow(temp_f)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
 
     else:
@@ -558,7 +577,7 @@ def boot_func():
     time.sleep(2)
 
 
-def need_help():  # 帮助！
+def need_help(is_return=False):  # 帮助！
 
     f_list = ["乌干达", "刚果", "坦桑尼亚", "赤道几内亚", "阿富汗", "阿塞拜疆", "缅甸", "挪威", "朝鲜",
               "不丹", "保加利亚", "中国", "乍得", "古巴", "加拿大", "海地", "伊朗", "印度",
@@ -584,7 +603,15 @@ def need_help():  # 帮助！
 
     main_str = "帮助%s的%s！" % (f_list[random.randint(0, len(f_list) - 1)], s_list[random.randint(0, len(s_list) - 1)])
 
-    print(main_str)
+    if is_return:
+
+        return main_str
+
+    else:
+
+        print(main_str)
+
+
 
 
 def what_day():
