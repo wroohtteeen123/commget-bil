@@ -53,7 +53,7 @@ database_host = "localhost"     # 数据库的位置，现在是本地。
 database_user = "root"          # 数据库的用户名。
 database_password = "root"      # 数据库，用户的密码。
 database_database = "PyTest"    # 数据库名，你看着办吧。
-table_name = "lidanglaoshi"     # 表单名称，建议修改。
+table_name = "ChubbyemuAF"     # 表单名称，建议修改。
 
 temp_data = []
 
@@ -86,6 +86,9 @@ except:     # 异常子句过于宽泛？好吧，我觉得还行吧。
     print("ERR-我感觉出了些问题！")
 
 database.close()
+
+# print(temp_data)
+
 temp_data.replace('\n', '')
 temp_data.replace('\r', '')
 temp_data_list = list(temp_data)

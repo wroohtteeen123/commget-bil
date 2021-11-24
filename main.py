@@ -17,6 +17,7 @@ import math
 import json
 import secrets
 import pymysql
+import sys
 
 from pyfiglet import Figlet
 from tkinter import *
@@ -60,18 +61,28 @@ def get_full_pages(av_pin):    # 函数，是用来把这个视频里的所有�
 
     page_tag = 1    # 这个是一开始的页数，并不是零21。（这个语音识别好怪哟，懒得改。
 
+    # print("页面号: ", end=" ")
+
     while True:     # 这个循环式这个函数的主体，是这样说的吗？
 
         url = "https://api.bilibili.com/x/v2/reply?pn=%d&type=1&oid=%d&sort=2" % (page_tag, av_pin)
         data_download = get_single_page(url)                                    # 使用函数获得页的内容，再给到data_download。
         name_local_doc = "./cache/av/o-saveData_Av-%d_Page-%d.json" % (av_pin, page_tag)   # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)                        # 使用函数，保存页的内容。
-        print("PageTag: ", page_tag)                        # 打印页面号码。
+
+        # print(page_tag, end=" ")                        # 打印页面号码。
+
+        print("\r", end="")
+        print("正在处理的页面:", page_tag, end="")
+
+        sys.stdout.flush()
+
         time.sleep(0.4 + (secrets.randbelow(3000) / 10000))    # 生成随机0.50-1.00秒以内的数字。。
 
         if not data_usability_test(name_local_doc, "c"):     # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
 
-            print("END-这个视频结束了！")
+            print("\r", end="")
+            print("所有页面处理完毕！")
             break
 
         else:
@@ -83,6 +94,7 @@ def get_full_pages(av_pin):    # 函数，是用来把这个视频里的所有�
             except:     # 异常子句过于宽泛？好吧，我觉得还行吧。
 
                 time.sleep(2)
+                print("")
                 print("ERR-你的数据库应该是卡了。好吧，其实我也不知道到底是怎么回事，反正如果没有下一条提示的话，那应该是没什么大问题问题。")
 
                 try:
@@ -135,7 +147,7 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
         # print("来自文件：", data_file_tag)
         # 这个用不了，变量名改了。
 
-        # print("-" * 50)
+        # print("━" * 50)
 
         database = pymysql.connect(
 
@@ -161,6 +173,7 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
 
         except:     # 异常子句过于宽泛？好吧，我觉得还行吧。
 
+            print("")
             print("ERR-没法把数据存到表里,多半是里面有单引号。也可能有其他的问题了，这也说不准。")
             database.rollback()             # 发生错误时回滚.
 
@@ -304,7 +317,7 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
         if not data_usability_test(name_local_doc, "v"):  # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
 
             print("BRE-现在应该是完全结束了，我猜是这样，也可能不是这样，我建议你检查一下，好吧，再见。")
-            print("-" * 40)
+            print("━" * 40)
             break
 
         else:
@@ -330,9 +343,9 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
 
                 get_full_pages(data_av)
 
-                print("-" * 40)
+                print("━" * 40)
                 need_help()
-                print("-" * 40)
+                print("━" * 40)
 
                 # 这个是预览：
 
@@ -360,7 +373,7 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
             if break_tag == 1:
 
                 print("BRE-这一步结束了，我猜是这样。")
-                print("-" * 40)
+                print("━" * 40)
                 break
 
         page_tag += 1  # 下一个页面。
@@ -384,7 +397,7 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
         if not data_usability_test(name_local_doc, "f"):  # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
 
             print("BRE-现在应该是完全结束了，只能访问前250个关注，也可能不是这样，我建议你检查一下，好吧，再见。")
-            print("-" * 40)
+            print("━" * 40)
             break
 
         else:
@@ -411,16 +424,16 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
                 print(data_uname)
                 print(data_sign)
 
-                print("-"*40)
+                print("━"*40)
                 need_help()
-                print("-" * 40)
+                print("━" * 40)
 
                 get_full_video(data_mid)
 
             if break_tag == 1:
 
                 print("BRE-现在应该是完全结束了，我猜是这样，也可能不是这样，我建议你检查一下，好吧，拜拜。")
-                print("-" * 40)
+                print("━" * 40)
                 break
 
         page_tag += 1  # 下一个页面。
@@ -475,7 +488,7 @@ def boot_func():
 
     if is_custom_database_input == "y":
 
-        print("-" * 40)
+        print("━" * 40)
         print("Host(localhost):", end="")
         database_host = input()
         print("User(root):", end="")
@@ -484,7 +497,7 @@ def boot_func():
         database_password = input()
         print("Database(PyTest):", end="")
         database_database = input()
-        print("-" * 40)
+        print("━" * 40)
 
     elif is_custom_database_input == "n":
 
@@ -604,6 +617,13 @@ def what_day():
         Label(r_swt, text=" " * 70).pack()
 
         r_swt.mainloop()
+
+    if day_time == 1123:
+
+        print("━" * 65)
+        print("历史上的今天：。")
+        print("2021年，全斗焕死了。")
+        print("━" * 65)
 
     if day_time == 1129:
 
