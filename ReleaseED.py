@@ -1,17 +1,27 @@
-import random
-import urllib.request
-import urllib.parse
-import gzip
+# -*- coding = utf-8 -*-
+# @Time : 2021-11-8     ⏰
+# @Author : P.B.A.S     🍥
+# @File : main.py       🫀
+# @Software : PyCharm   💾
+
 import os
 import ssl
 import time
 import math
 import json
 import secrets
+import random
+import sys
+import urllib.request
+import urllib.parse
+import gzip
 import pymysql
 from pyfiglet import Figlet
+from tkinter import *
 
 ssl._create_default_https_context = ssl._create_unverified_context  # 全局取消验证。（其实我也不知道这句话是干嘛的（反正删掉了就不能用了（报错怎么办呢
+
+
 database_host = ""          # 数据库的地址。
 database_user = ""          # 数据库的用户。
 database_password = ""      # 数据库的密码。
@@ -20,18 +30,29 @@ table_name = ""             # 数据库里的表名。
 
 
 def get_single_page(page_url):  # 用于获得单个网络页面的函数。
-
     block_page = {"code": 0, "message": "0", "ttl": 1, "data": {"replies": []}}
     header_bunker = {
         "Accept-Encoding": "gzip, deflate",
         "User-Agent": "Mozilla/5.0 (Macintosh; Apple silicon Mac OS X 12_1_0) Gecko/20100101 Firefox/94.0"
     }  # 伪装成浏览器，也可以加一些别的。
-    page_request = urllib.request.Request(url=page_url, headers=header_bunker)  # 把url地址和头部打包。
+    try:
+        page_request = urllib.request.Request(url=page_url, headers=header_bunker)  # 把url地址和头部打包。
+
+    except urllib.error.HTTPError:
+        try:
+            time.sleep(10)
+            page_request = urllib.request.Request(url=page_url, headers=header_bunker)
+            print("ERR-错误。")
+
+        except urllib.error.HTTPError:
+            print("ERR-未知错误。")
+
     page_data_raw = urllib.request.urlopen(page_request)                    # 开个网页，把返回的内容传给page_data_raw。
     page_data_mar = page_data_raw.read()                                    # 把网页返回的所有数据读出到page_data_mar。
     try:
         page_data_deco = gzip.decompress(page_data_mar).decode("utf-8")     # 将mar的数据解码成utf-8，存到deco。
         return page_data_deco  # 将网页解码得到的数据返回给函数。
+
     except:
         print("ERR-有点问题，可能是评论区被关闭了。")
         return str(block_page)
@@ -42,24 +63,33 @@ def get_full_pages(av_pin):    # 函数，是用来把这个视频里的所有�
     while True:     # 这个循环式这个函数的主体，是这样说的吗？
         url = "https://api.bilibili.com/x/v2/reply?pn=%d&type=1&oid=%d&sort=2" % (page_tag, av_pin)
         data_download = get_single_page(url)                                    # 使用函数获得页的内容，再给到data_download。
-        name_local_doc = "o-saveData_Av-%d_Page-%d.json" % (av_pin, page_tag)   # 这是保存在本地的网页文件的名字或者是位置。
+        name_local_doc = "./cache/av/o-saveData_Av-%d_Page-%d.json" % (av_pin, page_tag)   # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)                        # 使用函数，保存页的内容。
-        print("PageTag: ", page_tag)                        # 打印页面号码。
-        time.sleep(0.5 + (secrets.randbelow(40000) / 80000))    # 生成随机0.50-1.00秒以内的数字。。
+        print("\r", end="")
+        print("正在处理的页面:", page_tag, end="")
+        sys.stdout.flush()
+        time.sleep(0.4 + (secrets.randbelow(3000) / 10000))    # 生成随机0.50-1.00秒以内的数字。。
         if not data_usability_test(name_local_doc, "c"):     # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
-            print("END-这个视频结束了！")
+            print("\r", end="")
+            print("所有页面处理完毕！")
             break
+
         else:
             try:
                 data_process_and_save(name_local_doc)
+
             except:     # 异常子句过于宽泛？好吧，我觉得还行吧。
                 time.sleep(2)
+                print("")
                 print("ERR-你的数据库应该是卡了。好吧，其实我也不知道到底是怎么回事，反正如果没有下一条提示的话，那应该是没什么大问题问题。")
+
                 try:
                     data_process_and_save(name_local_doc)
+
                 except:     # 异常子句过于宽泛？好吧，我觉得还行吧。
                     print("ERR-你的数据库多半是炸了，建议检查一下或是重启一下，如果还是不行的话，重启一下电脑。")
                     pass    # 我确实不知道你的数据库到底出什么问题，但我觉得好像是有些问题，但我确实又不知道什么问题。
+
             pass
         page_tag += 1  # 下一个页面。
 
@@ -69,6 +99,7 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
     file_content_str = file_open.read()  # 把内容写到file_content_str。
     file_open.close()  # 关闭文件。
     file_content_dict = json.loads(file_content_str)  # 把Json文件转换为字典。
+
     for user_temp_id in range(len(file_content_dict["data"]["replies"])):  # 检测有N个回复，循环N次。
         data_username = file_content_dict["data"]["replies"][user_temp_id]["member"]["uname"]
         data_gender = file_content_dict["data"]["replies"][user_temp_id]["member"]["sex"]
@@ -81,23 +112,29 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
         data_say_time_array = time.localtime(data_c_time)
         data_say_time = time.strftime("%Y-%m-%d %H:%M:%S", data_say_time_array)
         database = pymysql.connect(
+
             host=database_host,
             user=database_user,
             password=database_password,
             database=database_database
+
         )  # 连接数据库。注意密码和数据库名。
         database_cursor = database.cursor()  # 添加指针。
         database_do = "INSERT INTO %s(Username, \
             Gender, Bio, UID, Level, SayWhat, ULike, SayTime, FileTag) \
                 VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % \
-                    (table_name, data_username, data_gender, data_bio, data_uid, data_level, data_say_what,
-                    data_u_like, data_say_time, data_file_tag)
+                    (table_name, data_username, data_gender, data_bio, data_uid, data_level,
+                     data_say_what, data_u_like, data_say_time, data_file_tag)
+
         try:        # 尝试运行。
             database_cursor.execute(database_do)    # 执行sql。
             database.commit()
+
         except:     # 异常子句过于宽泛？好吧，我觉得还行吧。
+            print("")
             print("ERR-没法把数据存到表里,多半是里面有单引号。也可能有其他的问题了，这也说不准。")
             database.rollback()             # 发生错误时回滚.
+
         database.close()    # 关闭数据库。
 
 
@@ -115,22 +152,28 @@ def data_usability_test(name_local_doc, mode):                                # 
         file_content_dict_for_end = json.loads(file_content_str_for_end)    # 把Json文件转换为字典。
     except:
         return False
+
     if mode == "c":     # 评论检测
         if len(file_content_dict_for_end["data"]["replies"]) == 0:          # 获取到的评论数量检测。
             os.remove(name_local_doc)  # 删除文件。
             return False    # 没有评论返回假。
+
         else:
             return True     # 有评论返回真。
+
     if mode == "v":     # 视频检测
         if len(file_content_dict_for_end["data"]["list"]["vlist"]) == 0:  # 获取到的评论数量检测。
             os.remove(name_local_doc)  # 删除文件。
             return False  # 没有评论返回假。
+
         else:
             return True  # 有评论返回真。
+
     if mode == "f":     # 视频检测
         if len(file_content_dict_for_end["data"]["list"]) == 0:  # 获取到的评论数量检测。
             os.remove(name_local_doc)  # 删除文件。
             return False  # 没有评论返回假。
+
         else:
             return True  # 有评论返回真。
 
@@ -150,6 +193,7 @@ def bv_to_av(bv):   # 不知道从哪儿偷来的代码,忘了。。。
     bvno2 = []
     for index, ch in enumerate(bvno1):
         bvno2.append(int(str(keys[ch])))
+
     bvno2[0] = int(bvno2[0] * math.pow(58, 6))
     bvno2[1] = int(bvno2[1] * math.pow(58, 2))
     bvno2[2] = int(bvno2[2] * math.pow(58, 4))
@@ -163,6 +207,7 @@ def bv_to_av(bv):   # 不知道从哪儿偷来的代码,忘了。。。
     bv_to_av_sum = 0
     for i in bvno2:
         bv_to_av_sum += i
+
     bv_to_av_sum -= 100618342136696320
     temp = 177451812
     return bv_to_av_sum ^ temp
@@ -188,23 +233,28 @@ def creation_new_tab(host_i, user_i, password_i, database_i):   # 这个函数�
 def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有视频的AV，BV，还有别的信息提取出来，算是吧。
     page_tag = 1
     break_tag = 0
+
     while True:
         url = "https://api.bilibili.com/x/space/arc/search?mid=%d&ps=30&tid=0&pn=%d" % (uid_upper, page_tag)
         data_download = get_single_page(url)  # 使用函数获得页的内容，再给到data_download。
-        name_local_doc = "o-saveData_upperUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
+        name_local_doc = "./cache/upperuid/o-saveData_upperUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
         print("Video: ", page_tag)  # 打印页面号码。
+
         if not data_usability_test(name_local_doc, "v"):  # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
             print("BRE-现在应该是完全结束了，我猜是这样，也可能不是这样，我建议你检查一下，好吧，再见。")
-            print("-" * 40)
+            print("━" * 40)
             break
+
         else:
             file_open = open(name_local_doc, "r")  # 打开本地保存的文件。
             file_content_str = file_open.read()  # 把内容写到file_content_str。
             file_open.close()  # 关闭文件。
             file_content_dict = json.loads(file_content_str)  # 把Json文件转换为字典。
+
             if len(file_content_dict["data"]["list"]["vlist"]) < 30:
                 break_tag = 1
+
             for user_temp_id in range(len(file_content_dict["data"]["list"]["vlist"])):  # 检测有N个回复，循环N次。
                 data_av = file_content_dict["data"]["list"]["vlist"][user_temp_id]["aid"]
                 data_bv = file_content_dict["data"]["list"]["vlist"][user_temp_id]["bvid"]
@@ -213,37 +263,44 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
                 print(data_bv)
                 print(data_title)
                 get_full_pages(data_av)
-                print("-" * 40)
+                print("━" * 40)
                 need_help()
-                print("-" * 40)
+                print("━" * 40)
+
             if break_tag == 1:
                 print("BRE-这一步结束了，我猜是这样。")
-                print("-" * 40)
+                print("━" * 40)
                 break
+
         page_tag += 1  # 下一个页面。
-        time.sleep(0.5 + (secrets.randbelow(40000) / 80000))    # 生成随机0.50-1.00秒以内的数字。。
+        time.sleep(0.4 + (secrets.randbelow(3000) / 10000))    # 生成随机0.50-1.00秒以内的数字。。
 
 
 def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的所有用户。
     page_tag = 1
     break_tag = 0
+
     while True:
         url = "https://api.bilibili.com/x/relation/followings?vmid=%d&pn=%d" % (uid_upper, page_tag)
         data_download = get_single_page(url)  # 使用函数获得页的内容，再给到data_download。
-        name_local_doc = "o-saveData_followUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
+        name_local_doc = "./cache/followuid/o-saveData_followUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
         print("Following: ", page_tag)  # 打印页面号码。
+
         if not data_usability_test(name_local_doc, "f"):  # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
             print("BRE-现在应该是完全结束了，只能访问前250个关注，也可能不是这样，我建议你检查一下，好吧，再见。")
-            print("-" * 40)
+            print("━" * 40)
             break
+
         else:
             file_open = open(name_local_doc, "r")  # 打开本地保存的文件。
             file_content_str = file_open.read()  # 把内容写到file_content_str。
             file_open.close()  # 关闭文件。
             file_content_dict = json.loads(file_content_str)  # 把Json文件转换为字典。
+
             if len(file_content_dict["data"]["list"]) < 50:
                 break_tag = 1
+
             for user_temp_id in range(len(file_content_dict["data"]["list"])):  # 检测有N个回复，循环N次。
                 data_mid = file_content_dict["data"]["list"][user_temp_id]["mid"]
                 data_uname = file_content_dict["data"]["list"][user_temp_id]["uname"]
@@ -251,19 +308,22 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
                 print(data_mid)
                 print(data_uname)
                 print(data_sign)
-                print("-"*40)
+                print("━"*40)
                 need_help()
-                print("-" * 40)
+                print("━" * 40)
                 get_full_video(data_mid)
+
             if break_tag == 1:
                 print("BRE-现在应该是完全结束了，我猜是这样，也可能不是这样，我建议你检查一下，好吧，拜拜。")
-                print("-" * 40)
+                print("━" * 40)
                 break
+
         page_tag += 1  # 下一个页面。
-        time.sleep(0.5 + (secrets.randbelow(40000) / 80000))    # 生成随机0.50-1.00秒以内的数字。。
+        time.sleep(0.4 + (secrets.randbelow(3000) / 10000))    # 生成随机0.50-1.00秒以内的数字。。
 
 
 def boot_func():
+
     global database_host
     global database_user
     global database_password
@@ -272,13 +332,11 @@ def boot_func():
     print("━" * 65)
     print(Figlet().renderText("Commget-Bil!"), end="")
     print("━" * 65)
-    print("   欢迎使用这个程序！", end="  ")
-    print("请根据提示选择模式！", end=" ")
-    need_help()
+    t_text_1 = "欢迎使用这个程序!请根据提示选择模式!" + str(need_help(True))
+    print("{: ^47s}".format(str(t_text_1)))
     print("━" * 65)
-    print("｜单个视频的评论： p ", end="｜")
-    print("单个用户的视频： v ", end="｜")
-    print("用户关注的用户： f ", end="｜\n")
+    t_text_2 = "|单个视频的评论:p|单个用户的视频:v|用户关注的用户:f|"
+    print("{: ^51s}".format(str(t_text_2)))
     print("━" * 65)
     print("输入模式(p/v/f)：", end="")
     ot_input = input()
@@ -286,23 +344,26 @@ def boot_func():
     table_name = input()
     print("需要自定义数据库连接吗(y/n)：", end="")
     is_custom_database_input = input()
+
     if is_custom_database_input == "y":
-        print("-" * 40)
-        print("Host(localhost):")
+        print("━" * 40)
+        print("Host(localhost):", end="")
         database_host = input()
-        print("User(root):")
+        print("User(root):", end="")
         database_user = input()
-        print("Password(root):")
+        print("Password(root):", end="")
         database_password = input()
-        print("Database(PyTest):")
+        print("Database(PyTest):", end="")
         database_database = input()
-        print("-" * 40)
+        print("━" * 40)
+
     elif is_custom_database_input == "n":
         print("使用默认设置。")
         database_host = "localhost"  # 数据库的位置，现在是本地。
         database_user = "root"  # 数据库的用户名。
         database_password = "root"  # 数据库，用户的密码。
         database_database = "PyTest"  # 数据库名，你看着办吧。
+
     else:
         print("ERR-请确认输入(y/n)。")
         print("3s_exit()")
@@ -312,19 +373,28 @@ def boot_func():
         print("1s_exit()")
         time.sleep(1)
         exit()
+
     creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
+    print("连接成功。")
+
     if ot_input == "p":
-        print("输入BV号(str)：")
+        print("输入BV号(str)：", end="")
         temp_p = input()
+        print("━" * 65)
         get_full_pages(bv_to_av(temp_p))  # 下载这个视频的全部评论。
+
     elif ot_input == "v":
-        print("输入用户号码(int)：")
-        temp_v = input()
+        print("输入用户号码(int)：", end="")
+        temp_v = int(input())
+        print("━" * 65)
         get_full_video(temp_v)  # 把这个UP主的所有视频下的评论一起下载。
+
     elif ot_input == "f":
-        print("输入用户号码(int)：")
-        temp_f = input()
+        print("输入用户号码(int)：", end="")
+        temp_f = int(input())
+        print("━" * 65)
         get_full_follow(temp_f)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
+
     else:
         print("ERR-请确认输入(p/v/f)。")
         print("3s_exit()")
@@ -334,23 +404,86 @@ def boot_func():
         print("1s_exit()")
         time.sleep(1)
         exit()
+
     print("━" * 65)
     time.sleep(2)
 
 
-def need_help():  # 帮助！
+def need_help(is_return=False):  # 帮助！
     f_list = ["乌干达", "刚果", "坦桑尼亚", "赤道几内亚", "阿富汗", "阿塞拜疆", "缅甸", "挪威", "朝鲜",
               "不丹", "保加利亚", "中国", "乍得", "古巴", "加拿大", "海地", "伊朗", "印度",
               "丹麦", "埃塞俄比亚", "日本", "立陶宛", "墨西哥", "波兰", "卡塔尔", "俄罗斯", "罗马尼亚", "南非",
               "瑞士", "叙利亚", "泰国", "美国", "英国", "阿联酋", "越南", "梵蒂冈", "赞比亚", "津巴布韦", "香港",
               "台湾", "索科特拉岛", "南极", "法属圭亚那", "百慕大", "车臣"]
-    s_list = ["可怜儿童", "少数群体", "国家官员", "民间组织", "残疾警官", "跨性别者", "同性恋者", "异性恋者", "无性恋者", "双性恋者",
-              "知识分子", "社会精英", "政治领袖", "非洲移民", "亚洲移民", "美洲移民", "欧洲移民", "基督教徒", "天主教徒", "道教教徒",
-              "回教教徒", "无产阶级", "底层农民", "游击队员", "民主人士", "技术工人"]
+
+    day_time = int(time.strftime("%m%d", time.localtime()))
+
+    if day_time == 1120:
+        s_list = ["跨性别者", ]
+
+    elif day_time == 501:
+        s_list = ["民间组织", "政治领袖", "亚洲移民", "美洲移民", "欧洲移民", "无产阶级", "底层农民", "游击队员", "民主人士", "技术工人"]
+
+    else:
+        s_list = ["可怜儿童", "少数群体", "国家官员", "民间组织", "残疾警官", "跨性别者", "同性恋者", "异性恋者", "无性恋者", "双性恋者",
+                  "知识分子", "社会精英", "政治领袖", "非洲移民", "亚洲移民", "美洲移民", "欧洲移民", "基督教徒", "天主教徒", "道教教徒",
+                  "回教教徒", "无产阶级", "底层农民", "游击队员", "民主人士", "技术工人"]
     main_str = "帮助%s的%s！" % (f_list[random.randint(0, len(f_list) - 1)], s_list[random.randint(0, len(s_list) - 1)])
-    print(main_str)
+
+    if is_return:
+        return main_str
+
+    else:
+        print(main_str)
+
+
+def what_day():
+    day_time = int(time.strftime("%m%d", time.localtime()))
+    if day_time == 501:
+        print("━" * 65)
+        print("今天是国际示威游行日。")
+        print("━" * 65)
+
+    if day_time == 1120:
+        r_swt = Tk()
+        r_swt.title("TDoR")
+        Button(r_swt, text="跨性别死难者纪念日", bd=15).pack()
+        Label(r_swt, text=" " * 60, bg="light blue").pack()
+        Label(r_swt, text=" " * 60, bg="pink").pack()
+        Label(r_swt, text=" " * 60, bg="white").pack()
+        Label(r_swt, text=" " * 60, bg="pink").pack()
+        Label(r_swt, text=" " * 60, bg="light blue").pack()
+        Label(r_swt, text="").pack()
+        Label(r_swt, text="悼念被谋杀的跨性别者🕯").pack()
+        Label(r_swt, text=" " * 70).pack()
+        r_swt.mainloop()
+
+    if day_time == 1123:
+        print("━" * 65)
+        print("历史上的今天：。")
+        print("2021年，全斗焕死了。")
+        print("━" * 65)
+
+    if day_time == 1129:
+        print("━" * 65)
+        print("历史上的今天：。")
+        print("1947年，联大通过了第181号决议。")
+        print("━" * 65)
+
+    if day_time == 1212:
+        print("━" * 65)
+        print("历史上的今天：。")
+        print("1979年，全斗焕发动了一场军事政变。")
+        print("━" * 65)
+
+    if day_time == 1214:
+        print("━" * 65)
+        print("历史上的今天：。")
+        print("1960年，联大通过了第1514号决议。")
+        print("━" * 65)
 
 
 if __name__ == '__main__':      # 这个是程序开始运行的地方。
+    what_day()
     boot_func()
     pass

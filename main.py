@@ -6,18 +6,21 @@
 
 
 # import 列表。
-import random
-import urllib.request
-import urllib.parse
-import gzip
 import os
 import ssl
 import time
 import math
 import json
 import secrets
-import pymysql
+import random
 import sys
+
+
+import urllib.request
+import urllib.parse
+import gzip
+import pymysql
+
 
 from pyfiglet import Figlet
 from tkinter import *
