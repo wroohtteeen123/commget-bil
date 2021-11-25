@@ -328,7 +328,8 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
 
         url = "https://api.bilibili.com/x/space/arc/search?mid=%d&ps=30&tid=0&pn=%d" % (uid_upper, page_tag)
         data_download = get_single_page(url)  # 使用函数获得页的内容，再给到data_download。
-        name_local_doc = "./cache/upperuid/o-saveData_upperUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
+        name_local_doc = "./cache/upperuid/o-saveData_upperUid-%d_Page-%d.json" % (uid_upper, page_tag)
+        # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
         print("Video: ", page_tag)  # 打印页面号码。
 
@@ -407,7 +408,8 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
 
         url = "https://api.bilibili.com/x/relation/followings?vmid=%d&pn=%d" % (uid_upper, page_tag)
         data_download = get_single_page(url)  # 使用函数获得页的内容，再给到data_download。
-        name_local_doc = "./cache/followuid/o-saveData_followUid-%d_Page-%d.json" % (uid_upper, page_tag)  # 这是保存在本地的网页文件的名字或者是位置。
+        name_local_doc = "./cache/followuid/o-saveData_followUid-%d_Page-%d.json" % (uid_upper, page_tag)
+        # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
 
         print("Following: ", page_tag)  # 打印页面号码。
@@ -615,16 +617,35 @@ def need_help(is_return=False):  # 帮助！
         print(main_str)
 
 
-
-
 def what_day():
+
+    day_init = {
+        11:"1912年，中华民国正式成立。",
+        14:"1969年，联合国大会第1904号决议通过了《联合国消除一切形式种族歧视宣言》。",
+        501: "1886年，芝加哥劳工争取八小时工作制而被警察武装镇压。",
+        523: "1943年，共产国际执行委员会主席团公开宣布《解散共产国际的决议》",
+        1120: "1998年，Rita Hester被谋杀。",
+        1123: "2021年，全斗焕死了。",
+        1125: "1936年，日德签订反共产国际协定。",
+        1129: "1947年，联大通过了第181号决议。",
+        1212: "1979年，全斗焕发动了一场军事政变。",
+        1214: "1960年，联大通过了第1514号决议。",
+        1225: "1991年，苏联灭亡。",
+    }
+
     day_time = int(time.strftime("%m%d", time.localtime()))
 
-    if day_time == 501:
+    try:
 
         print("━" * 65)
-        print("今天是国际示威游行日。")
+        print(day_init[day_time])
         print("━" * 65)
+
+    except:
+
+        pass
+
+    day_time = int(time.strftime("%m%d", time.localtime()))
 
     if day_time == 1120:
 
@@ -647,34 +668,6 @@ def what_day():
         Label(r_swt, text=" " * 70).pack()
 
         r_swt.mainloop()
-
-    if day_time == 1123:
-
-        print("━" * 65)
-        print("历史上的今天：。")
-        print("2021年，全斗焕死了。")
-        print("━" * 65)
-
-    if day_time == 1129:
-
-        print("━" * 65)
-        print("历史上的今天：。")
-        print("1947年，联大通过了第181号决议。")
-        print("━" * 65)
-
-    if day_time == 1212:
-
-        print("━" * 65)
-        print("历史上的今天：。")
-        print("1979年，全斗焕发动了一场军事政变。")
-        print("━" * 65)
-
-    if day_time == 1214:
-
-        print("━" * 65)
-        print("历史上的今天：。")
-        print("1960年，联大通过了第1514号决议。")
-        print("━" * 65)
 
 
 # main.
