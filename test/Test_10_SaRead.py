@@ -66,6 +66,7 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
         database_results = database_cursor.fetchall()
 
         for database_row in database_results:
+
             temp_data_list.append(str(database_row[5]))
 
     except:  # 异常子句过于宽泛？好吧，我觉得还行吧。
@@ -77,7 +78,7 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
     return temp_data_list
 
 
-for list_str in db_get_comm(table_name=""):  # 列表里的每一个人字符串。
+for list_str in db_get_comm(table_name="XDC339233162"):  # 列表里的每一个人字符串。
 
     # print(tab_data)
 

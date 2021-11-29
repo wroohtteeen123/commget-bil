@@ -69,6 +69,6 @@
     from pyfiglet import Figlet
     from tkinter import *
 
-## [OneMoreThing](OneMoreThing.md':include')
+[comment]: <> (## [OneMoreThing]&#40;OneMoreThing.md':include'&#41;)
 
-## [Sample](Sample.md':include')
+[comment]: <> (## [Sample]&#40;Sample.md':include'&#41;)
