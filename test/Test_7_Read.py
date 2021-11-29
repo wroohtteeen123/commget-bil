@@ -77,7 +77,7 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
     return temp_data_list
 
 
-for list_str in db_get_comm(table_name="simanan"):  # 列表里的每一个人字符串。
+for list_str in db_get_comm(table_name=""):  # 列表里的每一个人字符串。
 
     # print(tab_data)
 
@@ -115,10 +115,10 @@ for list_str in db_get_comm(table_name="simanan"):  # 列表里的每一个人�
     con_tab = False
     temp_data_int = 0
 
-    for i in break_list:
+    for break_str in break_list:
         try:
 
-            temp_data_int += int(tab_data[i])
+            temp_data_int += (float((int(tab_data[break_str]["a"]) + 0.000000001) / int(tab_data["_commin_"]["a"])) * 100) - (float((int(tab_data[break_str]["o"]) + 0.000000001) / int(tab_data["_commin_"]["o"])) * 100)
             # --------------------------------------------
 
         except:
@@ -132,7 +132,13 @@ for list_str in db_get_comm(table_name="simanan"):  # 列表里的每一个人�
         if temp_data_int >= 0.8:
 
             for break_str in break_list:
-                tab_data[break_str] = float(tab_data[break_str]) + 0.1
+
+                tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
+                tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
+
+                print("PA")
+
+                # tab_data[break_str] = float(tab_data[break_str]) + 0.1
                 # print("HELLO")
 
             print(temp_data_int)
@@ -141,7 +147,13 @@ for list_str in db_get_comm(table_name="simanan"):  # 列表里的每一个人�
         elif temp_data_int <= -0.8:
 
             for break_str in break_list:
-                tab_data[break_str] = float(tab_data[break_str]) + -0.1
+
+                tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
+                tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
+
+                print("NE")
+
+                # tab_data[break_str] = float(tab_data[break_str]) + -0.1
 
             print(temp_data_int)
             print("Con_Tab Running-")
@@ -172,7 +184,11 @@ for list_str in db_get_comm(table_name="simanan"):  # 列表里的每一个人�
     # print("这是正常的评论(y/n/p):", end="")
     # c_input = input()
 
-    c_input = "n"
+    # ------------------------------------------------------------
+
+    c_input = "y"
+
+    # ------------------------------------------------------------
 
     # print("分词输出", break_list)
     # print("="*300)
@@ -223,4 +239,13 @@ for list_str in db_get_comm(table_name="simanan"):  # 列表里的每一个人�
             pass
 
     # print(tab_data)
-print(tab_data)
+
+file_dic = open("file_dic.cb", "w+")
+
+file_dic.write(json.dumps(tab_data))
+
+file_dic.close()
+
+# print(tab_data)
+
+
