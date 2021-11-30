@@ -78,7 +78,7 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
     return temp_data_list
 
 
-for list_str in db_get_comm(table_name="XDC339233162"):  # 列表里的每一个人字符串。
+for list_str in db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="GCZW"):  # 列表里的每一个人字符串。
 
     # print(tab_data)
 
@@ -113,8 +113,9 @@ for list_str in db_get_comm(table_name="XDC339233162"):  # 列表里的每一个
 
     # print(temp_data_str)
 
-    con_tab = False
-    temp_data_int = 0
+    # con_tab = False
+    # temp_data_int = 0
+
 
     # for break_str in break_list:
     #     try:
@@ -187,7 +188,7 @@ for list_str in db_get_comm(table_name="XDC339233162"):  # 列表里的每一个
 
     # ------------------------------------------------------------
 
-    c_input = "y"
+    c_input = "n"
 
     # ------------------------------------------------------------
 

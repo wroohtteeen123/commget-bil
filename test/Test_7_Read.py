@@ -2,7 +2,6 @@ import jieba
 import pymysql
 import json
 
-
 # print(temp_data_list)
 
 list_del = ["\n", " ", "。", ".", "，", ",", "[", "]", "{", "}",
@@ -17,6 +16,7 @@ tab_data = {}
 tab_data = json.loads(next_str)
 # print(next_dic)
 file_dic.close()
+
 
 # print(tab_data)
 # print(type(tab_data))
@@ -34,7 +34,13 @@ file_dic.close()
 #              ]    # 测试list，太离谱了。
 
 
-def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):   # 这个函数是用来获取数据库的评论全部。
+def db_get_comm(
+        db_host="localhost",
+        db_user="root",
+        db_password="root",
+        db_database="PyTest",
+        table_name="bilcome"
+):  # 这个函数是用来获取数据库的评论全部。
     # database_host = "localhost"  # 数据库的位置，现在是本地。
     # database_user = "root"  # 数据库的用户名。
     # database_password = "root"  # 数据库，用户的密码。
@@ -118,7 +124,8 @@ for list_str in db_get_comm(table_name=""):  # 列表里的每一个人字符串
     for break_str in break_list:
         try:
 
-            temp_data_int += (float((int(tab_data[break_str]["a"]) + 0.000000001) / int(tab_data["_commin_"]["a"])) * 100) - (float((int(tab_data[break_str]["o"]) + 0.000000001) / int(tab_data["_commin_"]["o"])) * 100)
+            temp_data_int += (float(
+                (int(tab_data[break_str]["a"]) + 0.000000001) / int(tab_data["_commin_"]["a"])) * 100) - (float((int(tab_data[break_str]["o"]) + 0.000000001) / int(tab_data["_commin_"]["o"])) * 100)
             # --------------------------------------------
 
         except:
@@ -132,7 +139,6 @@ for list_str in db_get_comm(table_name=""):  # 列表里的每一个人字符串
         if temp_data_int >= 0.8:
 
             for break_str in break_list:
-
                 tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
                 tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
 
@@ -147,7 +153,6 @@ for list_str in db_get_comm(table_name=""):  # 列表里的每一个人字符串
         elif temp_data_int <= -0.8:
 
             for break_str in break_list:
-
                 tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
                 tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
 
@@ -247,5 +252,3 @@ file_dic.write(json.dumps(tab_data))
 file_dic.close()
 
 # print(tab_data)
-
-

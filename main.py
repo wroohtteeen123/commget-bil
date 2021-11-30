@@ -488,12 +488,12 @@ def boot_func():
     print("━" * 65)
 
     t_text_1 = "欢迎使用这个程序!请根据提示选择模式!" + str(need_help(True))
-    print("{: ^47s}".format(str(t_text_1)))
+    print("{: ^38s}".format(str(t_text_1)))
 
     print("━" * 65)
 
     t_text_2 = "|单个视频的评论:p|单个用户的视频:v|用户关注的用户:f|"
-    print("{: ^51s}".format(str(t_text_2)))
+    print("{: ^38s}".format(str(t_text_2)))
 
     print("━" * 65)
 
@@ -668,6 +668,50 @@ def what_day():
         Label(r_swt, text=" " * 70).pack()
 
         r_swt.mainloop()
+
+    def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",
+                    table_name="bilcome"):  # 这个函数是用来获取数据库的评论全部。
+
+        # database_host = "localhost"  # 数据库的位置，现在是本地。
+        # database_user = "root"  # 数据库的用户名。
+        # database_password = "root"  # 数据库，用户的密码。
+        # database_database = "PyTest"  # 数据库名，你看着办吧。
+        # table_name = "simanan"  # 表单名称，建议修改。
+
+        # database_ ==> db_
+
+        temp_data_list = []  # 把获得到的所有数据存在这个列表里。
+
+        database = pymysql.connect(
+
+            host=db_host,
+            user=db_user,
+            password=db_password,
+            database=db_database
+
+        )  # 连接数据库。注意密码和数据库名。
+
+        database_cursor = database.cursor()  # 这个是数据库的指针。
+
+        database_do = "SELECT * FROM %s" % table_name  # 需要执行的数据库命令。%s是用来输入表明的。
+
+        # database_do = "SELECT * FROM %s WHERE ULike > %s" % (table_name, 1000) # 这一条是用来搜索具体的料。
+
+        try:  # 尝试运行。
+
+            database_cursor.execute(database_do)
+            database_results = database_cursor.fetchall()
+
+            for database_row in database_results:
+                temp_data_list.append(str(database_row[5]))
+
+        except:  # 异常子句过于宽泛？好吧，我觉得还行吧。
+
+            print("ERR-我感觉出了些问题！")
+
+        database.close()
+
+        return temp_data_list
 
 
 # main.

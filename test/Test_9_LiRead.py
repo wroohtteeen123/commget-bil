@@ -11,6 +11,9 @@ list_del = ["\n", " ", "。", ".", "，", ",", "[", "]", "{", "}",
 
 y = 0  # 这个是用来判断的。
 
+all_data_int = 0
+all_data_cunt = 0
+
 file_dic = open("file_dic.cb", "r")  # 这句用来读取文件。
 next_str = file_dic.read()
 tab_data = {}
@@ -34,7 +37,14 @@ file_dic.close()
 #              ]    # 测试list，太离谱了。
 
 
-def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):   # 这个函数是用来获取数据库的评论全部。
+def db_get_comm(
+        db_host="localhost",
+        db_user="root",
+        db_password="root",
+        db_database="PyTest",
+        table_name="bilcome"
+):   # 这个函数是用来获取数据库的评论全部。
+
     # database_host = "localhost"  # 数据库的位置，现在是本地。
     # database_user = "root"  # 数据库的用户名。
     # database_password = "root"  # 数据库，用户的密码。
@@ -77,7 +87,7 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
     return temp_data_list
 
 
-for list_str in db_get_comm(table_name="XDC339233162"):  # 列表里的每一个人字符串。
+for list_str in db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="LinpuFull"):  # 列表里的每一个人字符串。
 
     # print(tab_data)
 
@@ -123,8 +133,11 @@ for list_str in db_get_comm(table_name="XDC339233162"):  # 列表里的每一个
         # print(tab_data[break_str]["o"])
         # print(tab_data["_commin_"]["o"])
 
-        # print(float((int(tab_data[break_str]["a"]) + 0.0001) / int(tab_data["_commin_"]["a"])) * 10 - float((int(tab_data[break_str]["o"]) + 0.0001) / int(tab_data["_commin_"]["o"])) * 10)
-
+        # print(
+        # float((int(tab_data[break_str]["a"]) + 0.0001) / int(tab_data["_commin_"]["a"])) * 10
+        # -
+        # float((int(tab_data[break_str]["o"]) + 0.0001) / int(tab_data["_commin_"]["o"])) * 10
+        # )
 
         try:
 
@@ -141,62 +154,65 @@ for list_str in db_get_comm(table_name="XDC339233162"):  # 列表里的每一个
 
     print(temp_data_int)
 
-    if not con_tab:
+    all_data_int += temp_data_int
+    all_data_cunt += 1
 
-        if temp_data_int >= 0.8:
-
-            pass
-
-            # for break_str in break_list:
-            #
-            #     tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
-            #     tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
-            #
-            #     print("PA")
-            #
-            #     tab_data[break_str] = float(tab_data[break_str]) + 0.1
-            #     print("HELLO")
-            #
-            # print(temp_data_int)
-            # print("Con_Tab Running+")
-
-        elif temp_data_int <= -0.8:
-
-            pass
-
-            # for break_str in break_list:
-            #
-            #     tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
-            #     tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
-            #
-            #     print("NE")
-            #
-            #     tab_data[break_str] = float(tab_data[break_str]) + -0.1
-
-            # print(temp_data_int)
-            # print("Con_Tab Running-")
-
-        else:
-
-            pass
-
-            # print("Con_Tab")
-
-        # file_dic = open("file_dic.cb", "w+")
-        #
-        # file_dic.write(json.dumps(tab_data))
-        #
-        # file_dic.close()
-
-        # file_dic = open("file_dic.cb", "r")
-        #
-        # next_str = file_dic.read()
-        # tab_data = json.loads(next_str)
-        # # print(next_dic)
-        #
-        # file_dic.close()
-
-        # continue
+    # if not con_tab:
+    #
+    #     if temp_data_int >= 0.8:
+    #
+    #         pass
+    #
+    #         # for break_str in break_list:
+    #         #
+    #         #     tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
+    #         #     tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
+    #         #
+    #         #     print("PA")
+    #         #
+    #         #     tab_data[break_str] = float(tab_data[break_str]) + 0.1
+    #         #     print("HELLO")
+    #         #
+    #         # print(temp_data_int)
+    #         # print("Con_Tab Running+")
+    #
+    #     elif temp_data_int <= -0.8:
+    #
+    #         pass
+    #
+    #         # for break_str in break_list:
+    #         #
+    #         #     tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
+    #         #     tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
+    #         #
+    #         #     print("NE")
+    #         #
+    #         #     tab_data[break_str] = float(tab_data[break_str]) + -0.1
+    #
+    #         # print(temp_data_int)
+    #         # print("Con_Tab Running-")
+    #
+    #     else:
+    #
+    #         pass
+    #
+    #         # print("Con_Tab")
+    #
+    #     file_dic = open("file_dic.cb", "w+")
+    #
+    #     file_dic.write(json.dumps(tab_data))
+    #
+    #     file_dic.close()
+    #
+    #     file_dic = open("file_dic.cb", "r")
+    #
+    #     next_str = file_dic.read()
+    #     tab_data = json.loads(next_str)
+    #     # print(next_dic)
+    #
+    #     file_dic.close()
+    #
+    #     continue
 
     # if con_tab:
     #
@@ -259,5 +275,6 @@ for list_str in db_get_comm(table_name="XDC339233162"):  # 列表里的每一个
     #     if c_input == "p":
     #         pass
 
-
-
+print(all_data_int)
+print(all_data_cunt)
+print(all_data_int / all_data_cunt)
