@@ -753,32 +753,55 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
 
 def save_data_cb(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
 
+    print("请输入你要保存到的位置(str):", end="")
+    temp_p = str(input())
+
+    file_name = temp_p + ".cb"
+
     list_del = ["\n", " ", "。", ".", "，", ",", "[", "]", "{", "}",
                 "【", "】", "「", "」", "！", "!", "?", "？", "(", ")", "（", "）", "/", ":", "”", ";",
                 "-", "=", "_", "…", "~", "～", "+", "▿", "&", "#", "@", "："]  # 这个是删除的列表。
 
     y = 0  # 这个是用来判断的。
 
-    file_dic = open("file_dic.cb", "w+")  # 这句用来读取文件。
+    file_dic = open(file_name, "w+")  # 这句用来读取文件。
     next_str = file_dic.read()
 
-    if not next_str:
+    # print(next_str)
+    #
+    # time.sleep(4)
+
+    # global tab_data
+
+    # tab_data = json.loads(next_str)
+    # # print(next_dic)
+    # file_dic.close()
+
+    try:
+
+        tab_data = json.loads(next_str)
+        # print(next_dic)
+        file_dic.close()
+
+    except:
 
         file_dic.close()
 
-        file_dic = open("file_dic.cb", "w+")  # 这句用来读取文件。
+        file_dic = open(file_name, "w+")  # 这句用来读取文件。
 
         new_cb_file = "{}"
         file_dic.write(new_cb_file)
 
         file_dic.close()
 
-        file_dic = open("file_dic.cb", "r")  # 这句用来读取文件。
+        file_dic = open(file_name, "r")  # 这句用来读取文件。
         next_str = file_dic.read()
 
-    tab_data = json.loads(next_str)
-    # print(next_dic)
-    file_dic.close()
+        tab_data = json.loads(next_str)
+        # print(next_dic)
+        file_dic.close()
+
+        pass
 
     # print(tab_data)
     # print(type(tab_data))
@@ -821,7 +844,7 @@ def save_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
         # print(type(temp_data_str))
 
         if not temp_data_str:
-            
+
             continue
 
         seg_list = jieba.cut(temp_data_str)  # 结果是个生成器，还不能直接使用
@@ -959,7 +982,7 @@ def save_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
 
         # print(tab_data)
 
-    file_dic = open("file_dic.cb", "w+")
+    file_dic = open(file_name, "w+")
 
     file_dic.write(json.dumps(tab_data))
 
