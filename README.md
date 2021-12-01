@@ -60,6 +60,7 @@
     import math     # 计算 Av 号使用。
     import json     # 把 Json 转换成字典。
     import secrets  # 计算随机延时。
+    import sys      # sys!
 
     import urllib.request   
     import urllib.parse

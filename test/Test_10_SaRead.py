@@ -77,177 +77,178 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
 
     return temp_data_list
 
+def save_data_cb(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="GCZW"):
 
-for list_str in db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="GCZW"):  # 列表里的每一个人字符串。
+    for list_str in db_get_comm(db_host, db_user, db_password, db_database, table_name):  # 列表里的每一个人字符串。
 
-    # print(tab_data)
+        # print(tab_data)
 
-    temp_data_str = ""  # 清空零食数据字符串。
+        temp_data_str = ""  # 清空零食数据字符串。
 
-    print(list_str)
+        print(list_str)
 
-    for i in list(list_str):  # 把字符串打成列表。
+        for i in list(list_str):  # 把字符串打成列表。
 
-        for del_str in list_del:  # 选取删除列表中的每个需要删除的字，然后判断这一个只是不是要删除。
+            for del_str in list_del:  # 选取删除列表中的每个需要删除的字，然后判断这一个只是不是要删除。
 
-            if str(i) == str(del_str):  # 如果这个只需要删除的话，y就等于1。
+                if str(i) == str(del_str):  # 如果这个只需要删除的话，y就等于1。
 
-                y = 1
+                    y = 1
 
-        if y == 1:  # 如果需要删除就不保存，到临时大数据字符串。
+            if y == 1:  # 如果需要删除就不保存，到临时大数据字符串。
 
-            y = 0
+                y = 0
+                continue
+
+            temp_data_str += str(i)  # 如果不需要删除就把这一个文字保存到临时的数据字符串。
+
+        # print(temp_data_str)
+        # print(type(temp_data_str))
+
+        if not temp_data_str:
             continue
 
-        temp_data_str += str(i)  # 如果不需要删除就把这一个文字保存到临时的数据字符串。
+        seg_list = jieba.cut(temp_data_str)  # 结果是个生成器，还不能直接使用
 
-    # print(temp_data_str)
-    # print(type(temp_data_str))
+        break_list = [x for x in seg_list]  # 将分词的结果保存到列表中，可以看到元素是分好的词，列表长度即为分好的词的数量
 
-    if not temp_data_str:
-        continue
+        # print(temp_data_str)
 
-    seg_list = jieba.cut(temp_data_str)  # 结果是个生成器，还不能直接使用
-
-    break_list = [x for x in seg_list]  # 将分词的结果保存到列表中，可以看到元素是分好的词，列表长度即为分好的词的数量
-
-    # print(temp_data_str)
-
-    # con_tab = False
-    # temp_data_int = 0
+        # con_tab = False
+        # temp_data_int = 0
 
 
-    # for break_str in break_list:
-    #     try:
-    #
-    #         temp_data_int += (float((int(tab_data[break_str]["a"]) + 0.000000001) / int(tab_data["_commin_"]["a"])) * 100) - (float((int(tab_data[break_str]["o"]) + 0.000000001) / int(tab_data["_commin_"]["o"])) * 100)
-    #         # --------------------------------------------
-    #
-    #     except:
-    #
-    #         con_tab = True
-    #
-    #         break
-    #
-    # if not con_tab:
-    #
-    #     if temp_data_int >= 0.8:
-    #
-    #         for break_str in break_list:
-    #
-    #             tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
-    #             tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
-    #
-    #             print("PA")
-    #
-    #             # tab_data[break_str] = float(tab_data[break_str]) + 0.1
-    #             # print("HELLO")
-    #
-    #         print(temp_data_int)
-    #         print("Con_Tab Running+")
-    #
-    #     elif temp_data_int <= -0.8:
-    #
-    #         for break_str in break_list:
-    #
-    #             tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
-    #             tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
-    #
-    #             print("NE")
-    #
-    #             # tab_data[break_str] = float(tab_data[break_str]) + -0.1
-    #
-    #         print(temp_data_int)
-    #         print("Con_Tab Running-")
-    #
-    #     else:
-    #
-    #         print("Con_Tab")
-    #
-    #     file_dic = open("file_dic.cb", "w+")
-    #
-    #     file_dic.write(json.dumps(tab_data))
-    #
-    #     file_dic.close()
-    #
-    #     file_dic = open("file_dic.cb", "r")
-    #
-    #     next_str = file_dic.read()
-    #     tab_data = json.loads(next_str)
-    #     # print(next_dic)
-    #
-    #     file_dic.close()
-    #
-    #     continue
-    #
-    # if con_tab:
-    #     pass
+        # for break_str in break_list:
+        #     try:
+        #
+        #         temp_data_int += (float((int(tab_data[break_str]["a"]) + 0.000000001) / int(tab_data["_commin_"]["a"])) * 100) - (float((int(tab_data[break_str]["o"]) + 0.000000001) / int(tab_data["_commin_"]["o"])) * 100)
+        #         # --------------------------------------------
+        #
+        #     except:
+        #
+        #         con_tab = True
+        #
+        #         break
+        #
+        # if not con_tab:
+        #
+        #     if temp_data_int >= 0.8:
+        #
+        #         for break_str in break_list:
+        #
+        #             tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
+        #             tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
+        #
+        #             print("PA")
+        #
+        #             # tab_data[break_str] = float(tab_data[break_str]) + 0.1
+        #             # print("HELLO")
+        #
+        #         print(temp_data_int)
+        #         print("Con_Tab Running+")
+        #
+        #     elif temp_data_int <= -0.8:
+        #
+        #         for break_str in break_list:
+        #
+        #             tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
+        #             tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
+        #
+        #             print("NE")
+        #
+        #             # tab_data[break_str] = float(tab_data[break_str]) + -0.1
+        #
+        #         print(temp_data_int)
+        #         print("Con_Tab Running-")
+        #
+        #     else:
+        #
+        #         print("Con_Tab")
+        #
+        #     file_dic = open("file_dic.cb", "w+")
+        #
+        #     file_dic.write(json.dumps(tab_data))
+        #
+        #     file_dic.close()
+        #
+        #     file_dic = open("file_dic.cb", "r")
+        #
+        #     next_str = file_dic.read()
+        #     tab_data = json.loads(next_str)
+        #     # print(next_dic)
+        #
+        #     file_dic.close()
+        #
+        #     continue
+        #
+        # if con_tab:
+        #     pass
 
-    # print("这是正常的评论(y/n/p):", end="")
-    # c_input = input()
+        # print("这是正常的评论(y/n/p):", end="")
+        # c_input = input()
 
-    # ------------------------------------------------------------
+        # ------------------------------------------------------------
 
-    c_input = "n"
+        c_input = "n"
 
-    # ------------------------------------------------------------
+        # ------------------------------------------------------------
 
-    # print("分词输出", break_list)
-    # print("="*300)
+        # print("分词输出", break_list)
+        # print("="*300)
 
-    for break_str in break_list:
+        for break_str in break_list:
 
-        if c_input == "y":
+            if c_input == "y":
 
-            try:  # 把现有的字典里的东西增加。
+                try:  # 把现有的字典里的东西增加。
 
-                tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
+                    tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
 
-            except:  # 现有字典没有的话，就新建一个字典的条目。
+                except:  # 现有字典没有的话，就新建一个字典的条目。
 
-                tab_data["_commin_"] = {"a": 1, "o": 0}
+                    tab_data["_commin_"] = {"a": 1, "o": 0}
 
-            # ------------------------------
+                # ------------------------------
 
-            try:  # 把现有的字典里的东西增加。
+                try:  # 把现有的字典里的东西增加。
 
-                tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
+                    tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
 
-            except:  # 现有字典没有的话，就新建一个字典的条目。
+                except:  # 现有字典没有的话，就新建一个字典的条目。
 
-                tab_data[break_str] = {"a": 1, "o": 0}
+                    tab_data[break_str] = {"a": 1, "o": 0}
 
-        if c_input == "n":
+            if c_input == "n":
 
-            try:  # 把现有的字典里的东西增加。
+                try:  # 把现有的字典里的东西增加。
 
-                tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
+                    tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
 
-            except:  # 现有字典没有的话，就新建一个字典的条目。
+                except:  # 现有字典没有的话，就新建一个字典的条目。
 
-                tab_data["_commin_"] = {"a": 0, "o": 1}
+                    tab_data["_commin_"] = {"a": 0, "o": 1}
 
-            # ------------------------------
+                # ------------------------------
 
-            try:  # 把现有的字典里的东西增加。
+                try:  # 把现有的字典里的东西增加。
 
-                tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
+                    tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
 
-            except:  # 现有字典没有的话，就新建一个字典的条目。
+                except:  # 现有字典没有的话，就新建一个字典的条目。
 
-                tab_data[break_str] = {"a": 0, "o": 1}
+                    tab_data[break_str] = {"a": 0, "o": 1}
 
-        if c_input == "p":
-            pass
+            if c_input == "p":
+                pass
+
+        # print(tab_data)
+
+    file_dic = open("file_dic.cb", "w+")
+
+    file_dic.write(json.dumps(tab_data))
+
+    file_dic.close()
 
     # print(tab_data)
-
-file_dic = open("file_dic.cb", "w+")
-
-file_dic.write(json.dumps(tab_data))
-
-file_dic.close()
-
-# print(tab_data)
 
 
