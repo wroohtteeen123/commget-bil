@@ -1102,7 +1102,9 @@ def proc_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
             # float((int(tab_data[break_str]["o"]) + 0.0001) / int(tab_data["_commin_"]["o"])) * 10
             # )
 
-            # temp_data_int += (float((int(tab_data[break_str]["a"]) + 0.000000001) / int(tab_data["_commin_"]["a"])) * 100) - (float((int(tab_data[break_str]["o"]) + 0.000000001) / int(tab_data["_commin_"]["o"])) * 100)
+            # temp_data_int += (float((int(tab_data[break_str]["a"]) + 0.000000001) /
+            # int(tab_data["_commin_"]["a"])) * 100)
+            # - (float((int(tab_data[break_str]["o"]) + 0.000000001) / int(tab_data["_commin_"]["o"])) * 100)
 
             # print(tab_data)
 
@@ -1117,11 +1119,18 @@ def proc_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
 
                 try:
 
-                    if tab_data["_commin_"]["a"]) == 0:
+                    if tab_data["_commin_"]["a"] == 0:
 
-                        temp_data_int += (float((int(tab_data[break_str]["a"]) + low) / float(int(tab_data["_commin_"]["a"]) + low)) * 100) - (float((int(tab_data[break_str]["o"]) + low) / float(int(tab_data["_commin_"]["o"]) + low)) * 100)
+                        temp_data_int += 0 - (float((int(tab_data[break_str]["o"]) + low) / float(int(tab_data["_commin_"]["o"]) + low)) * 100)
 
-                    # temp_data_int += (float((int(tab_data[break_str]["a"]) + low) / float(int(tab_data["_commin_"]["a"]) + low)) * 100) - (float((int(tab_data[break_str]["o"]) + low) / float(int(tab_data["_commin_"]["o"]) + low)) * 100)
+                    if tab_data["_commin_"]["o"] == 0:
+
+                        temp_data_int += (float((int(tab_data[break_str]["a"]) + low) / float(int(tab_data["_commin_"]["a"]) + low)) * 100) - 0
+
+                    # temp_data_int += (float((int(tab_data[break_str]["a"]) + low) /
+                    # float(int(tab_data["_commin_"]["a"]) + low)) * 100) -
+                    # (float((int(tab_data[break_str]["o"]) + low) / float(int(tab_data["_commin_"]["o"]) + low)) * 100)
+
                     # --------------------------------------------
 
                     # print(float(int(tab_data[break_str]["a"]) + 0.000000001))
