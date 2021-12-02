@@ -485,6 +485,7 @@ def boot_func():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # ｜单个视频的评论： p ｜单个用户的视频： v ｜用户关注的用户： f ｜
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# # 输入模式(p / v / f)：
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #    ____                                     _        ____  _ _
@@ -494,12 +495,27 @@ def boot_func():
 #  \____\___/|_| |_| |_|_| |_| |_|\__, |\___|\__|    |____/|_|_|
 #                                 |___/
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 欢迎使用这个程序!请根据提示选择模式!帮助不丹的可怜儿童！
+#       欢迎使用这个程序!请根据提示选择模式!帮助不丹的可怜儿童！
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 #    | 单个视频的评论: p | 单个用户的视频:v | 用户关注的用户: f |
 #    | 处理表单的评论: p | 单个用户的视频:v | 用户关注的用户: f |
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 输入模式(p / v / f)：
+# # 输入模式(p / v / f)：
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#    ____                                     _        ____  _ _
+#  / ___|___  _ __ ___  _ __ ___   __ _  ___| |_     | __ )(_) |
+# | |   / _ \| '_ ` _ \| '_ ` _ \ / _` |/ _ \ __|____|  _ \| | |
+# | |__| (_) | | | | | | | | | | | (_| |  __/ ||_____| |_) | | |
+#  \____\___/|_| |_| |_|_| |_| |_|\__, |\___|\__|    |____/|_|_|
+#                                 |___/
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#       欢迎使用这个程序!请根据提示选择模式!帮助海地的游击队员！
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#    | 单个视频的评论: p | 单个用户的视频: v | 用户关注的用户: f |
+#    | 保存表单的评论: s | 分析表单的内容: r | 退出程序的选项: o |
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 输入模式(p / v / f / s / r / o)：
 
     print("━" * 65)
 
@@ -511,7 +527,7 @@ def boot_func():
     t_text_2 = "|单个视频的评论:p|单个用户的视频:v|用户关注的用户:f|"
     print("{: ^38s}".format(str(t_text_2)))
 
-    t_text_3 = "|保存表单的评论:s|分析表单的内容:r|没有作用的选项:o|"
+    t_text_3 = "|保存表单的评论:s|分析表单的内容:r|退出程序的选项:o|"
     print("{: ^38s}".format(str(t_text_3)))
 
     print("━" * 65)
@@ -596,15 +612,18 @@ def boot_func():
 
     elif ot_input == "r":
 
-        pass
+        proc_data_cb(db_host=database_host, db_user=database_user, db_password=database_password, db_database=database_database,table_name=table_name)
 
-    elif ot_input == "o":
+    elif ot_input == "e":
 
-        exit()
+        print("2s_exit()")
+        time.sleep(1)
+        print("1s_exit()")
+        time.sleep(1)
 
     else:
 
-        print("ERR-请确认输入(p/v/f/s/r/o)。")
+        print("ERR-请确认输入(p/v/f/s/r/e)。")
 
         print("3s_exit()")
         time.sleep(1)
@@ -989,6 +1008,299 @@ def save_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
     file_dic.close()
 
     # print(tab_data)
+
+
+def proc_data_cb(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="GCZW"):
+
+    # print(temp_data_list)
+
+    print("请输入你要对比的表单(str):", end="")
+    temp_p = str(input())
+
+    print("━" * 65)
+
+    file_name = temp_p + ".cb"
+
+    list_del = ["\n", " ", "。", ".", "，", ",", "[", "]", "{", "}",
+                "【", "】", "「", "」", "！", "!", "?", "？", "(", ")", "（", "）", "/", ":", "”", ";",
+                "-", "=", "_", "…", "~", "～", "+", "▿", "&", "#", "@", "："]  # 这个是删除的列表。
+
+    y = 0  # 这个是用来判断的。
+
+    all_data_int = 0
+    all_data_cunt = 0
+
+    file_dic = open(file_name, "r")  # 这句用来读取文件。
+    next_str = file_dic.read()
+    tab_data = {}
+    tab_data = json.loads(next_str)
+    # print(next_dic)
+    file_dic.close()
+
+    # print(tab_data)
+    # print(type(tab_data))
+
+    # {"你好": {"a": 213, "o": 324}, "心医": {"a": 643, "o": 12}}
+    # 这里是一个词典，前面是词后面跟着的词典A代表你的目标，O代表着你和他目标有多不相关.
+
+    # Test_list = ["这个up有个特点，他总是以最大的恶意去揣测西方，但是每次西方都会打他的脸，西方做起来比他揣测的还要恶毒。",
+    #              "以前的中国人承诺不清算日本跟我现在的中国人有什么关系？[doge]",
+    #              "小约翰可汗是嬉笑怒骂有时候要接点广告，毕竟人家视频干货是真的足，一个二十多岁刚毕业在上海的年轻人要生活能理解，"
+    #              "而且价值观很正，我不说他恰烂钱 心医三十多岁事业小成，生活富足，自己可以专心当心理医生，"
+    #              "却敢于站出来用自己的声音去喊醒很多人，自己不接单，不投原创，甚至不要求投币，这类人都被污蔑为恰烂钱，可见那些人以为钱是万能的",
+    #              "我以前还不信心医说的新型公知，但气象武器那次对线以及这次东京奥运会使劲舔这个阴间开幕式让我发现二鬼子是真的多，我更相信心医的话了，他们并不愿意我们有戒备心理，这是很危险的，还请大家小心[辣眼睛][辣眼睛]"
+    #              ]    # 测试list，太离谱了。
+
+    for list_str in db_get_comm(db_host, db_user, db_password, db_database, table_name):  # 列表里的每一个人字符串。
+
+        # print(tab_data)
+
+        temp_data_str = ""  # 清空零食数据字符串。
+
+        # print(list_str)
+
+        for i in list(list_str):  # 把字符串打成列表。
+
+            for del_str in list_del:  # 选取删除列表中的每个需要删除的字，然后判断这一个只是不是要删除。
+
+                if str(i) == str(del_str):  # 如果这个只需要删除的话，y就等于1。
+
+                    y = 1
+
+            if y == 1:  # 如果需要删除就不保存，到临时大数据字符串。
+
+                y = 0
+                continue
+
+            temp_data_str += str(i)  # 如果不需要删除就把这一个文字保存到临时的数据字符串。
+
+        # print(temp_data_str)
+        # print(type(temp_data_str))
+
+        if not temp_data_str:
+            continue
+
+        seg_list = jieba.cut(temp_data_str)  # 结果是个生成器，还不能直接使用
+
+        break_list = [x for x in seg_list]  # 将分词的结果保存到列表中，可以看到元素是分好的词，列表长度即为分好的词的数量
+
+        # print(temp_data_str)
+
+        con_tab = False
+        temp_data_int = 0
+
+        for break_str in break_list:
+
+            # print(tab_data[break_str]["a"])
+            # print(tab_data["_commin_"]["a"])
+            # print(tab_data[break_str]["o"])
+            # print(tab_data["_commin_"]["o"])
+
+            # print(
+            # float((int(tab_data[break_str]["a"]) + 0.0001) / int(tab_data["_commin_"]["a"])) * 10
+            # -
+            # float((int(tab_data[break_str]["o"]) + 0.0001) / int(tab_data["_commin_"]["o"])) * 10
+            # )
+
+            # temp_data_int += (float((int(tab_data[break_str]["a"]) + 0.000000001) / int(tab_data["_commin_"]["a"])) * 100) - (float((int(tab_data[break_str]["o"]) + 0.000000001) / int(tab_data["_commin_"]["o"])) * 100)
+
+            # print(tab_data)
+
+            low = 0.0000000000000000000000000000000001
+
+            try:
+
+                temp_data_int += (float((int(tab_data[break_str]["a"]) + low) / int(tab_data["_commin_"]["a"])) * 100) - (float((int(tab_data[break_str]["o"]) + low) / int(tab_data["_commin_"]["o"])) * 100)
+                # --------------------------------------------
+
+            except:
+
+                try:
+
+                    if tab_data["_commin_"]["a"]) == 0:
+
+                        temp_data_int += (float((int(tab_data[break_str]["a"]) + low) / float(int(tab_data["_commin_"]["a"]) + low)) * 100) - (float((int(tab_data[break_str]["o"]) + low) / float(int(tab_data["_commin_"]["o"]) + low)) * 100)
+
+                    # temp_data_int += (float((int(tab_data[break_str]["a"]) + low) / float(int(tab_data["_commin_"]["a"]) + low)) * 100) - (float((int(tab_data[break_str]["o"]) + low) / float(int(tab_data["_commin_"]["o"]) + low)) * 100)
+                    # --------------------------------------------
+
+                    # print(float(int(tab_data[break_str]["a"]) + 0.000000001))
+                    # print(float(tab_data["_commin_"]["a"])) * 100 + 0.000000001)
+                    # print(tab_data[break_str]["o"])
+                    # print(tab_data["_commin_"]["o"])
+                    # print("-----------")
+
+                except:
+
+                    con_tab = True
+
+                    print("WTF")
+
+                    break
+
+            print("--"*10)
+            print((float((int(tab_data[break_str]["a"]) + low) / float(int(tab_data["_commin_"]["a"]) + low)) * 100))
+            print((float((int(tab_data[break_str]["o"]) + low) / float(int(tab_data["_commin_"]["o"]) + low)) * 100))
+            print(temp_data_int)
+            print("--" * 10)
+
+        # print(temp_data_int)
+
+        all_data_int += temp_data_int
+        all_data_cunt += 1
+
+        # if not con_tab:
+        #
+        #     if temp_data_int >= 0.8:
+        #
+        #         pass
+        #
+        #         # for break_str in break_list:
+        #         #
+        #         #     tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
+        #         #     tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
+        #         #
+        #         #     print("PA")
+        #         #
+        #         #     tab_data[break_str] = float(tab_data[break_str]) + 0.1
+        #         #     print("HELLO")
+        #         #
+        #         # print(temp_data_int)
+        #         # print("Con_Tab Running+")
+        #
+        #     elif temp_data_int <= -0.8:
+        #
+        #         pass
+        #
+        #         # for break_str in break_list:
+        #         #
+        #         #     tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
+        #         #     tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
+        #         #
+        #         #     print("NE")
+        #         #
+        #         #     tab_data[break_str] = float(tab_data[break_str]) + -0.1
+        #
+        #         # print(temp_data_int)
+        #         # print("Con_Tab Running-")
+        #
+        #     else:
+        #
+        #         pass
+        #
+        #         # print("Con_Tab")
+        #
+        #     file_dic = open("file_dic.cb", "w+")
+        #
+        #     file_dic.write(json.dumps(tab_data))
+        #
+        #     file_dic.close()
+        #
+        #     file_dic = open("file_dic.cb", "r")
+        #
+        #     next_str = file_dic.read()
+        #     tab_data = json.loads(next_str)
+        #     # print(next_dic)
+        #
+        #     file_dic.close()
+        #
+        #     continue
+
+        # if con_tab:
+        #
+        #     pass
+
+        # print("这是正常的评论(y/n/p):", end="")
+        # c_input = input()
+
+        # # ------------------------------------------------------------
+        #
+        # c_input = "y"
+        #
+        # # ------------------------------------------------------------
+
+        # print("分词输出", break_list)
+        # print("="*300)
+
+        # for break_str in break_list:
+        #
+        #     if c_input == "y":
+        #
+        #         try:  # 把现有的字典里的东西增加。
+        #
+        #             tab_data["_commin_"]["a"] = tab_data["_commin_"]["a"] + 1
+        #
+        #         except:  # 现有字典没有的话，就新建一个字典的条目。
+        #
+        #             tab_data["_commin_"] = {"a": 1, "o": 0}
+        #
+        #         # ------------------------------
+        #
+        #         try:  # 把现有的字典里的东西增加。
+        #
+        #             tab_data[break_str]["a"] = tab_data[break_str]["a"] + 1
+        #
+        #         except:  # 现有字典没有的话，就新建一个字典的条目。
+        #
+        #             tab_data[break_str] = {"a": 1, "o": 0}
+        #
+        #     if c_input == "n":
+        #
+        #         try:  # 把现有的字典里的东西增加。
+        #
+        #             tab_data["_commin_"]["o"] = tab_data["_commin_"]["o"] + 1
+        #
+        #         except:  # 现有字典没有的话，就新建一个字典的条目。
+        #
+        #             tab_data["_commin_"] = {"a": 0, "o": 1}
+        #
+        #         # ------------------------------
+        #
+        #         try:  # 把现有的字典里的东西增加。
+        #
+        #             tab_data[break_str]["o"] = tab_data[break_str]["o"] + 1
+        #
+        #         except:  # 现有字典没有的话，就新建一个字典的条目。
+        #
+        #             tab_data[break_str] = {"a": 0, "o": 1}
+        #
+        #     if c_input == "p":
+        #         pass
+
+    print("━" * 65)
+
+    print(all_data_int)
+    print(all_data_cunt)
+    print(all_data_int / all_data_cunt)
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    #   ____                                     _        ____  _ _ _
+    #  / ___|___  _ __ ___  _ __ ___   __ _  ___| |_     | __ )(_) | |
+    # | |   / _ \| '_ ` _ \| '_ ` _ \ / _` |/ _ \ __|____|  _ \| | | |
+    # | |__| (_) | | | | | | | | | | | (_| |  __/ ||_____| |_) | | |_|
+    #  \____\___/|_| |_| |_|_| |_| |_|\__, |\___|\__|    |____/|_|_(_)
+    #                                 |___/
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    #     欢迎使用这个程序!请根据提示选择模式!帮助香港的可怜儿童！
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    #    |单个视频的评论:p|单个用户的视频:v|用户关注的用户:f|
+    #    |保存表单的评论:s|分析表单的内容:r|退出程序的选项:o|
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 输入模式(p/v/f/s/r/o)：r
+    # 输入一个需要处理的表名(str)：XY
+    # 需要自定义数据库连接吗(y/n)：n
+    # 使用默认设置。
+    # 请输入你要对比的表单(str):XY
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # Building prefix dict from the default dictionary ...
+    # Loading model from cache /XXX/XXXIX/XX/XXXIXeXXXIX_374895m342gn/T/jieba.cache
+    # Loading model cost 0.319 seconds.
+    # Prefix dict has been built successfully.
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 48475809.78273264
+    # 31411
+    # 1543.2749604512
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
 # main.
