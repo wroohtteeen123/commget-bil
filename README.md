@@ -9,7 +9,6 @@
 
 ~~但这第二个功能好像还是不能用。~~(好像可以用了呢
 
-
 ## 有什么用？
 
 好吧，其实我也不知道有什么用啊，而且实际上写得不好，还有很多问题的。
@@ -66,6 +65,7 @@
     import urllib.parse
     import gzip
     import pymysql
+    import jieba
 
     from pyfiglet import Figlet
     from tkinter import *

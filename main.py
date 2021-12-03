@@ -19,12 +19,119 @@ import sys
 import urllib.request
 import urllib.parse
 import gzip
+
+import fontTools.agl
 import pymysql
 import jieba
 
 
 from pyfiglet import Figlet
 from tkinter import *
+
+lang_set = "en"
+
+
+class Lang:
+
+    if lang_set == "en":
+
+        # Powered by Google Translate. (LOL
+        # 这翻译出来的都是什么鬼。。。
+
+        lc_err_01 = "ERR-Error."
+        lc_err_02 = "ERR-Unknown error."
+        lc_err_03 = "ERR-There is a problem, it may be that the comment area is closed ."
+        lc_err_04 = "ERR-Your database is stuck ."
+        lc_err_05 = "ERR-Your database has exploded, it is recommended to check it. "
+        lc_err_06 = "ERR-Can't save the data in the table, it contains single quotes. "
+        lc_err_07 = "ERR-Please check the input (y/n). "
+        lc_err_08 = "ERR-Please check the input (p/v/f/s/r/e)."
+        # lc_err_09 =
+
+        lc_opt_01 = "Use the default settings. "
+        lc_opt_02 = "All pages are processed! "
+        lc_opt_03 = "It should be completely over now, I suggest you check it, goodbye. "
+        lc_opt_04 = "This step is over, that's it. "
+        lc_opt_05 = "Connection succeeded. "
+        # lc_opt_06 =
+        # lc_opt_07 =
+        # lc_opt_08 =
+        # lc_opt_09 =
+
+        lc_bre_01 = "Video page number: "
+        lc_bre_02 = "Follow page number: "
+        lc_bre_03 = "Page being processed: "
+        lc_bre_04 = "Input mode (p/v/f/s/r/o): "
+        lc_bre_05 = "Enter a table name to be processed (str): "
+        lc_bre_06 = "Do you need to customize the database connection (y/n): "
+        lc_bre_07 = "Enter the BV number (str): "
+        lc_bre_08 = "Enter user number (int): "
+        lc_bre_09 = "Please enter the location you want to save to (str): "
+        lc_bre_10 = "Please enter the form you want to compare (str): "
+        # lc_bre_11 =
+        # lc_bre_12 =
+
+        lc_uit_01 = "Welcome! Please select a mode! "
+        lc_uit_02 = "|Comments of a single video:p|Videos of a single user:v|Users followed by the user:f| "
+        lc_uit_03 = "|Save the comment of the form: s|Analyze the content of the form: r|Exit the program: o| "
+        # lc_uit_04 =
+        # lc_uit_05 =
+        # lc_uit_06 =
+        # lc_uit_07 =
+        # lc_uit_08 =
+        # lc_uit_09 =
+
+
+
+        pass
+
+    if lang_set == "cn":
+
+        lc_err_01 = "ERR-错误。"
+        lc_err_02 = "ERR-未知错误。"
+        lc_err_03 = "ERR-有点问题，可能是评论区被关闭了。"
+        lc_err_04 = "ERR-你的数据库卡了。"
+        lc_err_05 = "ERR-你的数据库炸了，建议检查一下。"
+        lc_err_06 = "ERR-没法把数据存到表里,内含单引号。"
+        lc_err_07 = "ERR-请确认输入(y/n)。"
+        lc_err_08 = "ERR-请确认输入(p/v/f/s/r/e)。"
+        # lc_err_09 =
+
+        lc_opt_01 = "使用默认设置。"
+        lc_opt_02 = "所有页面处理完毕！"
+        lc_opt_03 = "现在应该是完全结束了，我建议你检查一下，再见。"
+        lc_opt_04 = "这一步结束了，是这样的。"
+        lc_opt_05 = "连接成功。"
+        # lc_opt_06 =
+        # lc_opt_07 =
+        # lc_opt_08 =
+        # lc_opt_09 =
+
+        lc_bre_01 = "视频页号: "
+        lc_bre_02 = "关注页号: "
+        lc_bre_03 = "正在处理的页面:"
+        lc_bre_04 = "输入模式(p/v/f/s/r/o)："
+        lc_bre_05 = "输入一个需要处理的表名(str)："
+        lc_bre_06 = "需要自定义数据库连接吗(y/n)："
+        lc_bre_07 = "输入BV号(str)："
+        lc_bre_08 = "输入用户号码(int)："
+        lc_bre_09 = "请输入你要保存到的位置(str):"
+        lc_bre_10 = "请输入你要对比的表单(str):"
+        # lc_bre_11 =
+        # lc_bre_12 =
+
+        lc_uit_01 = "欢迎使用这个程序!请根据提示选择模式!"
+        lc_uit_02 = "|单个视频的评论:p|单个用户的视频:v|用户关注的用户:f|"
+        lc_uit_03 = "|保存表单的评论:s|分析表单的内容:r|退出程序的选项:o|"
+        # lc_uit_04 =
+        # lc_uit_05 =
+        # lc_uit_06 =
+        # lc_uit_07 =
+        # lc_uit_08 =
+        # lc_uit_09 =
+
+        # Lang.lc_
+
 
 ssl._create_default_https_context = ssl._create_unverified_context  # 全局取消验证。（其实我也不知道这句话是干嘛的（反正删掉了就不能用了（报错怎么办呢
 
@@ -56,11 +163,11 @@ def get_single_page(page_url):  # 用于获得单个网络页面的函数。
 
             time.sleep(10)
             page_request = urllib.request.Request(url=page_url, headers=header_bunker)
-            print("ERR-错误。")
+            print(Lang.lc_err_01)
 
         except urllib.error.HTTPError:
 
-            print("ERR-未知错误。")
+            print(Lang.lc_err_02)
 
     page_data_raw = urllib.request.urlopen(page_request)                    # 开个网页，把返回的内容传给page_data_raw。
     page_data_mar = page_data_raw.read()                                    # 把网页返回的所有数据读出到page_data_mar。
@@ -72,7 +179,7 @@ def get_single_page(page_url):  # 用于获得单个网络页面的函数。
 
     except:
 
-        print("ERR-有点问题，可能是评论区被关闭了。")
+        print(Lang.lc_err_03)
         return str(block_page)
 
 
@@ -92,7 +199,7 @@ def get_full_pages(av_pin):    # 函数，是用来把这个视频里的所有�
         # print(page_tag, end=" ")                        # 打印页面号码。
 
         print("\r", end="")
-        print("正在处理的页面:", page_tag, end="")
+        print(Lang.lc_bre_03, page_tag, end="")
 
         sys.stdout.flush()
 
@@ -101,7 +208,7 @@ def get_full_pages(av_pin):    # 函数，是用来把这个视频里的所有�
         if not data_usability_test(name_local_doc, "c"):     # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
 
             print("\r", end="")
-            print("所有页面处理完毕！")
+            print(Lang.lc_opt_02)
             break
 
         else:
@@ -114,7 +221,8 @@ def get_full_pages(av_pin):    # 函数，是用来把这个视频里的所有�
 
                 time.sleep(2)
                 print("")
-                print("ERR-你的数据库应该是卡了。好吧，其实我也不知道到底是怎么回事，反正如果没有下一条提示的话，那应该是没什么大问题问题。")
+                print(Lang.lc_err_04)
+                # print("ERR-你的数据库应该是卡了。好吧，其实我也不知道到底是怎么回事，反正如果没有下一条提示的话，那应该是没什么大问题问题。")
 
                 try:
 
@@ -122,7 +230,7 @@ def get_full_pages(av_pin):    # 函数，是用来把这个视频里的所有�
 
                 except:     # 异常子句过于宽泛？好吧，我觉得还行吧。
 
-                    print("ERR-你的数据库多半是炸了，建议检查一下或是重启一下，如果还是不行的话，重启一下电脑。")
+                    print(Lang.lc_err_05)
                     pass    # 我确实不知道你的数据库到底出什么问题，但我觉得好像是有些问题，但我确实又不知道什么问题。
 
             pass
@@ -193,7 +301,7 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
         except:     # 异常子句过于宽泛？好吧，我觉得还行吧。
 
             print("")
-            print("ERR-没法把数据存到表里,多半是里面有单引号。也可能有其他的问题了，这也说不准。")
+            print(Lang.lc_err_06)
             database.rollback()             # 发生错误时回滚.
 
         database.close()    # 关闭数据库。
@@ -332,11 +440,11 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
         name_local_doc = "./cache/upperuid/o-saveData_upperUid-%d_Page-%d.json" % (uid_upper, page_tag)
         # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
-        print("Video: ", page_tag)  # 打印页面号码。
+        print(Lang.lc_bre_01, page_tag)  # 打印页面号码。
 
         if not data_usability_test(name_local_doc, "v"):  # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
 
-            print("BRE-现在应该是完全结束了，我猜是这样，也可能不是这样，我建议你检查一下，好吧，再见。")
+            print(Lang.lc_opt_03)
             print("━" * 65)
             break
 
@@ -392,7 +500,7 @@ def get_full_video(uid_upper):  # 这个函数，是用来把用户上传所有�
 
             if break_tag == 1:
 
-                print("BRE-这一步结束了，我猜是这样。")
+                print(Lang.lc_opt_04)
                 print("━" * 65)
                 break
 
@@ -413,11 +521,11 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
         # 这是保存在本地的网页文件的名字或者是位置。
         save_page_content(data_download, name_local_doc)  # 使用函数，保存页的内容。
 
-        print("Following: ", page_tag)  # 打印页面号码。
+        print(Lang.lc_bre_02, page_tag)  # 打印页面号码。
 
         if not data_usability_test(name_local_doc, "f"):  # 调用检测每一页是否有评论的函数，决定是跳过或是中断。
 
-            print("BRE-现在应该是完全结束了，只能访问前250个关注，也可能不是这样，我建议你检查一下，好吧，再见。")
+            print(Lang.lc_opt_03)
             print("━" * 65)
             break
 
@@ -453,7 +561,7 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
 
             if break_tag == 1:
 
-                print("BRE-现在应该是完全结束了，我猜是这样，也可能不是这样，我建议你检查一下，好吧，拜拜。")
+                print(Lang.lc_opt_03)
                 print("━" * 65)
                 break
 
@@ -519,24 +627,24 @@ def boot_func():
 
     print("━" * 65)
 
-    t_text_1 = "欢迎使用这个程序!请根据提示选择模式!" + str(need_help(True))
+    t_text_1 = Lang.lc_uit_01 + str(need_help(True))
     print("{: ^38s}".format(str(t_text_1)))
 
     print("━" * 65)
 
-    t_text_2 = "|单个视频的评论:p|单个用户的视频:v|用户关注的用户:f|"
+    t_text_2 = Lang.lc_uit_02
     print("{: ^38s}".format(str(t_text_2)))
 
-    t_text_3 = "|保存表单的评论:s|分析表单的内容:r|退出程序的选项:o|"
+    t_text_3 = Lang.lc_uit_03
     print("{: ^38s}".format(str(t_text_3)))
 
     print("━" * 65)
 
-    print("输入模式(p/v/f/s/r/o)：", end="")
+    print(Lang.lc_bre_04, end="")
     ot_input = input()
-    print("输入一个需要处理的表名(str)：", end="")
+    print(Lang.lc_bre_05, end="")
     table_name = input()
-    print("需要自定义数据库连接吗(y/n)：", end="")
+    print(Lang.lc_bre_06, end="")
     is_custom_database_input = input()
 
     if is_custom_database_input == "y":
@@ -554,7 +662,7 @@ def boot_func():
 
     elif is_custom_database_input == "n":
 
-        print("使用默认设置。")
+        print(Lang.lc_opt_01)
         database_host = "localhost"  # 数据库的位置，现在是本地。
         database_user = "root"  # 数据库的用户名。
         database_password = "root"  # 数据库，用户的密码。
@@ -562,7 +670,7 @@ def boot_func():
 
     else:
 
-        print("ERR-请确认输入(y/n)。")
+        print(Lang.lc_err_07)
 
         print("3s_exit()")
         time.sleep(1)
@@ -576,9 +684,9 @@ def boot_func():
     if ot_input == "p":
 
         creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
-        print("连接成功。")
+        print(Lang.lc_opt_05)
 
-        print("输入BV号(str)：", end="")
+        print(Lang.lc_bre_07, end="")
         temp_p = input()
 
         print("━" * 65)
@@ -587,9 +695,9 @@ def boot_func():
     elif ot_input == "v":
 
         creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
-        print("连接成功。")
+        print(Lang.lc_opt_05)
 
-        print("输入用户号码(int)：", end="")
+        print(Lang.lc_bre_08, end="")
         temp_v = int(input())
 
         print("━" * 65)
@@ -598,9 +706,9 @@ def boot_func():
     elif ot_input == "f":
 
         creation_new_tab(database_host, database_user, database_password, database_database)  # 创建一个新表，参数在上面。
-        print("连接成功。")
+        print(Lang.lc_opt_05)
 
-        print("输入用户号码(int)：", end="")
+        print(Lang.lc_bre_08, end="")
         temp_f = int(input())
 
         print("━" * 65)
@@ -623,7 +731,7 @@ def boot_func():
 
     else:
 
-        print("ERR-请确认输入(p/v/f/s/r/e)。")
+        print(Lang.lc_err_08)
 
         print("3s_exit()")
         time.sleep(1)
@@ -763,7 +871,7 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
 
     except:  # 异常子句过于宽泛？好吧，我觉得还行吧。
 
-        print("ERR-我感觉出了些问题！")
+        print(Lang.lc_err_02)
 
     database.close()
 
@@ -772,7 +880,7 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
 
 def save_data_cb(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
 
-    print("请输入你要保存到的位置(str):", end="")
+    print(Lang.lc_bre_09, end="")
     temp_p = str(input())
 
     file_name = temp_p + ".cb"
@@ -1014,7 +1122,7 @@ def proc_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
 
     # print(temp_data_list)
 
-    print("请输入你要对比的表单(str):", end="")
+    print(Lang.lc_bre_10, end="")
     temp_p = str(input())
 
     print("━" * 65)
@@ -1143,7 +1251,7 @@ def proc_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
 
                     con_tab = True
 
-                    print("WTF")
+                    print(Lang.lc_err_02)
 
                     break
 
@@ -1312,8 +1420,23 @@ def proc_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
+def run_now():
+
+    what_day()
+    boot_func()
+
+    pass
+
+
 # main.
 if __name__ == '__main__':      # 这个是程序开始运行的地方。
+
+    run_now()
+
+    # what_day()
+    # boot_func()
+    #
+    # pass
 
     # database_host = "localhost"     # 数据库的位置，现在是本地。
     # database_user = "root"          # 数据库的用户名。
@@ -1327,11 +1450,6 @@ if __name__ == '__main__':      # 这个是程序开始运行的地方。
     # get_full_follow(123456789)  # 下载这个用户关注的最后250位用户的全部视频的全部评论。
     # get_full_video(123456789)  # 把这个UP主的所有视频下的评论一起下载。
     # get_full_pages(bv_to_av("BVXNe"))  # 下载这个视频的全部评论。
-
-    what_day()
-    boot_func()
-
-    pass
 
 # 已过时==>
 # 上面的第一条主色调的就是创建一个新表，然后参数的话就在上面。
