@@ -28,7 +28,7 @@ import jieba
 from pyfiglet import Figlet
 from tkinter import *
 
-lang_set = "en"
+lang_set = "cn"
 
 
 class Lang:
