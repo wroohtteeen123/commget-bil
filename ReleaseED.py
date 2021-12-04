@@ -726,11 +726,9 @@ def run_now():
 
     what_day()
     boot_func()
-
     pass
 
 
-# main.
 if __name__ == '__main__':      # 这个是程序开始运行的地方。
 
     run_now()
