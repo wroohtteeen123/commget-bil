@@ -73,14 +73,97 @@ def db_get_gend(db_host="localhost", db_user="root", db_password="root", db_data
     return temp_data_list
 
 
+def db_get_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"):
+
+    temp_data_list = []  # 把获得到的所有数据存在这个列表里。
+
+    database_results = db_get_full(db_host=db_host, db_user=db_user, db_password=db_password, db_database=db_database, table_name=table_name)
+
+    for database_row in database_results:
+
+        temp_data_list.append(str(database_row[4]))
+
+    return temp_data_list
+
+
 if __name__ == '__main__':
 
-    print(db_get_full(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
-    # 获得数据库，全部内容。
+    # print(db_get_full(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
+    # # 获得数据库，全部内容。
+    #
+    # print(db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"))
+    # # 获得数据库里的全部评论。
+    #
+    # print(db_get_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
+    # # 获得数据库里的全部性别。
+    #
+    # print(db_get_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
+    # # 获得数据库里的全部等级。
 
-    print(db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"))
-    # 获得数据库里的全部评论。
+    what_lever = {"All": 0, 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
 
-    print(db_get_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
-    # 获得数据库里的全部性别。
+    k = db_get_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome")
+
+    try:
+
+        while True:
+
+            leve_pop = k.pop()
+
+            if leve_pop == "0":
+                what_lever[0] += 1
+
+            if leve_pop == "1":
+                what_lever[1] += 1
+
+            if leve_pop == "2":
+                what_lever[2] += 1
+
+            if leve_pop == "3":
+                what_lever[3] += 1
+
+            if leve_pop == "4":
+                what_lever[4] += 1
+
+            if leve_pop == "5":
+                what_lever[5] += 1
+
+            if leve_pop == "6":
+                what_lever[6] += 1
+
+            # print(leve_pop)
+
+            what_lever["All"] += 1
+
+
+    except:
+
+        pass
+
+    print(what_lever)
+
+    print("-" * 30)
+
+    print("共计评论数:", what_lever["All"])
+    print("0 级评论数:", what_lever[0])
+    print("1 级评论数:", what_lever[1])
+    print("2 级评论数:", what_lever[2])
+    print("3 级评论数:", what_lever[3])
+    print("4 级评论数:", what_lever[4])
+    print("5 级评论数:", what_lever[5])
+    print("6 级评论数:", what_lever[6])
+
+    print("-"*30)
+
+    print("0 级评论比例:", round((what_lever[0] / what_lever["All"]), 3) * 100)
+    print("1 级评论比例:", round((what_lever[1] / what_lever["All"]), 3) * 100)
+    print("2 级评论比例:", round((what_lever[2] / what_lever["All"]), 3) * 100)
+    print("3 级评论比例:", round((what_lever[3] / what_lever["All"]), 3) * 100)
+    print("4 级评论比例:", round((what_lever[4] / what_lever["All"]), 3) * 100)
+    print("5 级评论比例:", round((what_lever[5] / what_lever["All"]), 3) * 100)
+    print("6 级评论比例:", round((what_lever[6] / what_lever["All"]), 3) * 100)
+
+    print("-" * 30)
+
+
 
