@@ -1,4 +1,6 @@
 import pymysql
+import threading
+
 
 #  ('残梦希望12', '保密', 'BIO', 329415145, 4, '全都有了', 0, datetime.datetime(2021, 4, 12, 18, 16, 59), 'o-saveData_Av-757572522_Page-67.json')
 
@@ -86,23 +88,11 @@ def db_get_leve(db_host="localhost", db_user="root", db_password="root", db_data
     return temp_data_list
 
 
-if __name__ == '__main__':
-
-    # print(db_get_full(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
-    # # 获得数据库，全部内容。
-    #
-    # print(db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"))
-    # # 获得数据库里的全部评论。
-    #
-    # print(db_get_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
-    # # 获得数据库里的全部性别。
-    #
-    # print(db_get_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
-    # # 获得数据库里的全部等级。
+def db_get_what_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"):
 
     what_lever = {"All": 0, 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
 
-    k = db_get_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome")
+    k = db_get_leve(db_host=db_host, db_user=db_user, db_password=db_password, db_database=db_database, table_name=table_name)
 
     try:
 
@@ -153,17 +143,94 @@ if __name__ == '__main__':
     print("5 级评论数:", what_lever[5])
     print("6 级评论数:", what_lever[6])
 
-    print("-"*30)
+    print("-" * 30)
 
-    print("0 级评论比例:", round((what_lever[0] / what_lever["All"]), 3) * 100)
-    print("1 级评论比例:", round((what_lever[1] / what_lever["All"]), 3) * 100)
-    print("2 级评论比例:", round((what_lever[2] / what_lever["All"]), 3) * 100)
-    print("3 级评论比例:", round((what_lever[3] / what_lever["All"]), 3) * 100)
-    print("4 级评论比例:", round((what_lever[4] / what_lever["All"]), 3) * 100)
-    print("5 级评论比例:", round((what_lever[5] / what_lever["All"]), 3) * 100)
-    print("6 级评论比例:", round((what_lever[6] / what_lever["All"]), 3) * 100)
+    print("0 级评论比例:", (what_lever[0] / what_lever["All"]))
+    print("1 级评论比例:", (what_lever[1] / what_lever["All"]))
+    print("2 级评论比例:", (what_lever[2] / what_lever["All"]))
+    print("3 级评论比例:", (what_lever[3] / what_lever["All"]))
+    print("4 级评论比例:", (what_lever[4] / what_lever["All"]))
+    print("5 级评论比例:", (what_lever[5] / what_lever["All"]))
+    print("6 级评论比例:", (what_lever[6] / what_lever["All"]))
 
     print("-" * 30)
+
+
+def db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"):
+
+    what_lever = {"All": 0, "男": 0, "女": 0, "保密": 0}
+
+    k = db_get_gend(db_host=db_host, db_user=db_user, db_password=db_password, db_database=db_database,table_name=table_name)
+
+    try:
+
+        while True:
+
+            leve_pop = k.pop()
+
+            if leve_pop == "男":
+                what_lever["男"] += 1
+
+            if leve_pop == "女":
+                what_lever["女"] += 1
+
+            if leve_pop == "保密":
+                what_lever["保密"] += 1
+
+            # print(leve_pop)
+
+            what_lever["All"] += 1
+
+
+    except:
+
+        pass
+
+    print(what_lever)
+
+    print("-" * 30)
+
+    print("共计评论数:", what_lever["All"])
+    print("男 评论数:", what_lever["男"])
+    print("女 评论数:", what_lever["女"])
+    print("保密 评论数:", what_lever["保密"])
+
+    print("-" * 30)
+
+    print("男 评论比例:", (what_lever["男"] / what_lever["All"]))
+    print("女 评论比例:", (what_lever["女"] / what_lever["All"]))
+    print("保密 评论比例:", (what_lever["保密"] / what_lever["All"]))
+
+    print("-" * 30)
+
+
+if __name__ == '__main__':
+
+    # db_get_what_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome")
+    #
+    # db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome")
+
+    thread1 = threading.Thread(target=db_get_what_leve)
+    thread1.start()
+
+    thread2 = threading.Thread(target=db_get_what_gend)
+    thread2.start()
+
+
+
+    # print(db_get_full(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
+    # # 获得数据库，全部内容。
+    #
+    # print(db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"))
+    # # 获得数据库里的全部评论。
+    #
+    # print(db_get_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
+    # # 获得数据库里的全部性别。
+    #
+    # print(db_get_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"))
+    # # 获得数据库里的全部等级。
+
+
 
 
 

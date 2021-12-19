@@ -571,6 +571,8 @@ def get_full_follow(uid_upper):  # 这个函数， 检测这个用户关注的�
 
 def boot_func():
 
+    what_day()
+
     global database_host
     global database_user
     global database_password
@@ -1429,18 +1431,11 @@ def proc_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
-def run_now():
-
-    what_day()
-    boot_func()
-
-    pass
-
-
 # main.
 if __name__ == '__main__':      # 这个是程序开始运行的地方。
 
-    run_now()
+    boot_func()
+    pass
 
     # what_day()
     # boot_func()
