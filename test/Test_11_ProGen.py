@@ -206,15 +206,10 @@ def db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db
 
 if __name__ == '__main__':
 
-    # db_get_what_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome")
-    #
-    # db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome")
+    db_get_what_leve(db_host="127.0.0.1", db_user="root", db_password="root", db_database="PyTest",table_name="MDG")
 
-    thread1 = threading.Thread(target=db_get_what_leve)
-    thread1.start()
+    db_get_what_gend(db_host="127.0.0.1", db_user="root", db_password="root", db_database="PyTest",table_name="MDG")
 
-    thread2 = threading.Thread(target=db_get_what_gend)
-    thread2.start()
 
 
 
