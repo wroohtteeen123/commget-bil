@@ -8,7 +8,7 @@ class Lang:
 
     lc_err_02 = "err"
 
-def db_get_full(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"):  # 这个函数是用来获取数据库的全部。
+def db_get_full(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):  # 这个函数是用来获取数据库的全部。
 
     # database_host = "localhost"  # 数据库的位置，现在是本地。
     # database_user = "root"  # 数据库的用户名。
@@ -49,7 +49,7 @@ def db_get_full(db_host="localhost", db_user="root", db_password="root", db_data
         return 0
 
 
-def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"):
+def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
 
     temp_data_list = []  # 把获得到的所有数据存在这个列表里。
 
@@ -62,7 +62,7 @@ def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_data
     return temp_data_list
 
 
-def db_get_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"):
+def db_get_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
 
     temp_data_list = []  # 把获得到的所有数据存在这个列表里。
 
@@ -75,7 +75,7 @@ def db_get_gend(db_host="localhost", db_user="root", db_password="root", db_data
     return temp_data_list
 
 
-def db_get_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"):
+def db_get_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
 
     temp_data_list = []  # 把获得到的所有数据存在这个列表里。
 
@@ -88,7 +88,7 @@ def db_get_leve(db_host="localhost", db_user="root", db_password="root", db_data
     return temp_data_list
 
 
-def db_get_what_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"):
+def db_get_what_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
 
     what_lever = {"All": 0, 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
 
@@ -156,7 +156,7 @@ def db_get_what_leve(db_host="localhost", db_user="root", db_password="root", db
     print("-" * 30)
 
 
-def db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",table_name="bilcome"):
+def db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
 
     what_lever = {"All": 0, "男": 0, "女": 0, "保密": 0}
 
@@ -204,11 +204,171 @@ def db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db
     print("-" * 30)
 
 
+# def db_get_comm(db_full):
+#
+#     temp_data_list = []  # 把获得到的所有数据存在这个列表里。
+#
+#     database_results = db_full
+#
+#     for database_row in database_results:
+#         temp_data_list.append(str(database_row[5]))
+#
+#     return temp_data_list
+#
+#
+# def db_get_gend(db_full):
+#
+#     temp_data_list = []  # 把获得到的所有数据存在这个列表里。
+#
+#     database_results = db_full
+#
+#     for database_row in database_results:
+#         temp_data_list.append(str(database_row[1]))
+#
+#     return temp_data_list
+#
+#
+# def db_get_leve(db_full):
+#
+#     temp_data_list = []  # 把获得到的所有数据存在这个列表里。
+#
+#     database_results = db_full
+#
+#     for database_row in database_results:
+#         temp_data_list.append(str(database_row[4]))
+#
+#     return temp_data_list
+#
+#
+# def db_get_what_leve(db_full):
+#
+#     what_lever = {"All": 0, 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
+#
+#     k = db_full
+#
+#     print(k)
+#
+#     try:
+#
+#         while True:
+#
+#             leve_pop = k.pop()
+#
+#             if leve_pop == "0":
+#                 what_lever[0] += 1
+#
+#             if leve_pop == "1":
+#                 what_lever[1] += 1
+#
+#             if leve_pop == "2":
+#                 what_lever[2] += 1
+#
+#             if leve_pop == "3":
+#                 what_lever[3] += 1
+#
+#             if leve_pop == "4":
+#                 what_lever[4] += 1
+#
+#             if leve_pop == "5":
+#                 what_lever[5] += 1
+#
+#             if leve_pop == "6":
+#                 what_lever[6] += 1
+#
+#             # print(leve_pop)
+#
+#             what_lever["All"] += 1
+#
+#
+#     except:
+#
+#         pass
+#
+#     print(what_lever)
+#
+#     print("-" * 30)
+#
+#     print("共计评论数:", what_lever["All"])
+#     print("0 级评论数:", what_lever[0])
+#     print("1 级评论数:", what_lever[1])
+#     print("2 级评论数:", what_lever[2])
+#     print("3 级评论数:", what_lever[3])
+#     print("4 级评论数:", what_lever[4])
+#     print("5 级评论数:", what_lever[5])
+#     print("6 级评论数:", what_lever[6])
+#
+#     print("-" * 30)
+#
+#     print("0 级评论比例:", (what_lever[0] / what_lever["All"]))
+#     print("1 级评论比例:", (what_lever[1] / what_lever["All"]))
+#     print("2 级评论比例:", (what_lever[2] / what_lever["All"]))
+#     print("3 级评论比例:", (what_lever[3] / what_lever["All"]))
+#     print("4 级评论比例:", (what_lever[4] / what_lever["All"]))
+#     print("5 级评论比例:", (what_lever[5] / what_lever["All"]))
+#     print("6 级评论比例:", (what_lever[6] / what_lever["All"]))
+#
+#     print("-" * 30)
+#
+#
+# def db_get_what_gend(db_full):
+#
+#     what_lever = {"All": 0, "男": 0, "女": 0, "保密": 0}
+#
+#     k = db_full
+#
+#     try:
+#
+#         while True:
+#
+#             leve_pop = k.pop()
+#
+#             if leve_pop == "男":
+#                 what_lever["男"] += 1
+#
+#             if leve_pop == "女":
+#                 what_lever["女"] += 1
+#
+#             if leve_pop == "保密":
+#                 what_lever["保密"] += 1
+#
+#             # print(leve_pop)
+#
+#             what_lever["All"] += 1
+#
+#
+#     except:
+#
+#         pass
+#
+#     print(what_lever)
+#
+#     print("-" * 30)
+#
+#     print("共计评论数:", what_lever["All"])
+#     print("男 评论数:", what_lever["男"])
+#     print("女 评论数:", what_lever["女"])
+#     print("保密 评论数:", what_lever["保密"])
+#
+#     print("-" * 30)
+#
+#     print("男 评论比例:", (what_lever["男"] / what_lever["All"]))
+#     print("女 评论比例:", (what_lever["女"] / what_lever["All"]))
+#     print("保密 评论比例:", (what_lever["保密"] / what_lever["All"]))
+#
+#     print("-" * 30)
+
+
 if __name__ == '__main__':
 
-    db_get_what_leve(db_host="127.0.0.1", db_user="root", db_password="root", db_database="PyTest",table_name="MDG")
+    # db_full = db_get_full(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="ACSCMTF")
+    #
+    # print(db_full)
+    #
+    # db_get_what_leve(db_full)
+    #
+    # db_get_what_gend(db_full)
 
-    db_get_what_gend(db_host="127.0.0.1", db_user="root", db_password="root", db_database="PyTest",table_name="MDG")
+    pass
 
 
 
