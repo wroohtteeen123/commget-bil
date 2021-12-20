@@ -367,6 +367,10 @@ if __name__ == '__main__':
     # db_get_what_leve(db_full)
     #
     # db_get_what_gend(db_full)
+    db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",
+                     table_name="teev")
+    db_get_what_leve(db_host="localhost", db_user="root", db_password="root", db_database="PyTest",
+                     table_name="teev")
 
     pass
 
