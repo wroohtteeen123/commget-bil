@@ -73,17 +73,13 @@ class Lang:
 
         lc_uit_01 = "Welcome! Please select a mode! "
         lc_uit_02 = "|Comments of a single video:p|Videos of a single user:v|Users followed by the user:f| "
-        lc_uit_03 = "|Save the comment of the form: s|Analyze the content of the form: r|Exit the program: o| "
+        lc_uit_03 = "|Save the comment of the form: s|Analyze the content of the form: r|Quit and del cache: o| "
         # lc_uit_04 =
         # lc_uit_05 =
         # lc_uit_06 =
         # lc_uit_07 =
         # lc_uit_08 =
         # lc_uit_09 =
-
-
-
-        pass
 
     if lang_set == "cn":
 
@@ -100,7 +96,7 @@ class Lang:
         lc_opt_01 = "使用默认设置。"
         lc_opt_02 = "所有页面处理完毕！"
         lc_opt_03 = "现在应该是完全结束了，我建议你检查一下，再见。"
-        lc_opt_04 = "这一步结束了，是这样的。"
+        lc_opt_04 = "这一步完成了。"
         lc_opt_05 = "连接成功。"
         # lc_opt_06 =
         # lc_opt_07 =
@@ -122,7 +118,7 @@ class Lang:
 
         lc_uit_01 = "欢迎使用这个程序!请根据提示选择模式!"
         lc_uit_02 = "|单个视频的评论:p|单个用户的视频:v|用户关注的用户:f|"
-        lc_uit_03 = "|保存表单的评论:s|分析表单的内容:r|退出程序的选项:o|"
+        lc_uit_03 = "|保存表单的评论:s|分析表单的内容:r|清空缓存后退出:o|"
         # lc_uit_04 =
         # lc_uit_05 =
         # lc_uit_06 =
@@ -644,6 +640,13 @@ def boot_func():
 
     print(Lang.lc_bre_04, end="")
     ot_input = input()
+
+    if ot_input == "o":
+
+        cache_del()
+        time.sleep(1)
+        exit()
+
     print(Lang.lc_bre_05, end="")
     table_name = input()
     print(Lang.lc_bre_06, end="")
@@ -723,13 +726,6 @@ def boot_func():
     elif ot_input == "r":
 
         proc_data_cb(db_host=database_host, db_user=database_user, db_password=database_password, db_database=database_database,table_name=table_name)
-
-    elif ot_input == "e":
-
-        print("2s_exit()")
-        time.sleep(1)
-        print("1s_exit()")
-        time.sleep(1)
 
     else:
 
@@ -1429,6 +1425,35 @@ def proc_data_cb(db_host="localhost", db_user="root", db_password="root", db_dat
     # 31411
     # 1543.2749604512
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+def cache_del():
+    av_full_file = os.listdir(path="cache/av")
+    fo_full_file = os.listdir(path="cache/followuid")
+    up_full_file = os.listdir(path="cache/upperuid")
+
+    for i in range(len(av_full_file)):
+
+        av_pop = av_full_file.pop()
+
+        if not av_pop == "这里存放着文件":
+            os.remove("cache/av/%s" % av_pop)
+
+    for i in range(len(fo_full_file)):
+
+        fo_pop = fo_full_file.pop()
+
+        if not fo_pop == "这里存放着文件":
+            os.remove("cache/followuid/%s" % fo_pop)
+
+    for i in range(len(up_full_file)):
+
+        up_pop = up_full_file.pop()
+
+        if not up_pop == "这里存放着文件":
+            os.remove("cache/upperuid/%s" % up_pop)
+
+    print(Lang.lc_opt_04)
 
 
 # main.
