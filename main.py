@@ -20,7 +20,6 @@ import urllib.request
 import urllib.parse
 import gzip
 
-import fontTools.agl
 import pymysql
 import jieba
 
@@ -118,7 +117,7 @@ class Lang:
 
         lc_uit_01 = "欢迎使用这个程序!请根据提示选择模式!"
         lc_uit_02 = "|单个视频的评论:p|单个用户的视频:v|用户关注的用户:f|"
-        lc_uit_03 = "|保存表单的评论:s|分析表单的内容:r|清空缓存后退出:o|"
+        lc_uit_03 = "|保存表单的评论:s|分析表单的内容:r|清空缓存后退出:o|分析表单的内容:w|"
         # lc_uit_04 =
         # lc_uit_05 =
         # lc_uit_06 =
@@ -662,8 +661,6 @@ def boot_func():
         time.sleep(1)
         exit()
 
-    print(Lang.lc_bre_05, end="")
-    table_name = input()
     print(Lang.lc_bre_06, end="")
     is_custom_database_input = input()
 
@@ -698,6 +695,24 @@ def boot_func():
         time.sleep(1)
         print("1s_exit()")
         time.sleep(1)
+
+        exit()
+
+    print(Lang.lc_bre_05, end="")
+    table_name = input()
+
+    if ot_input == "w":
+
+        print("-" * 30)
+
+        print("下面是表", table_name, "的统计:")
+
+        db_get_what_leve(db_host=database_host, db_user=database_user, db_password=database_password,
+                         db_database=database_database, table_name=table_name)
+        db_get_what_gend(db_host=database_host, db_user=database_user, db_password=database_password,
+                         db_database=database_database, table_name=table_name)
+
+        print("-" * 30)
 
         exit()
 
@@ -968,7 +983,7 @@ def db_get_what_leve(db_host="localhost", db_user="root", db_password="root", db
 
         pass
 
-    print(what_lever)
+    # print(what_lever)
 
     print("-" * 30)
 
@@ -991,7 +1006,7 @@ def db_get_what_leve(db_host="localhost", db_user="root", db_password="root", db
     print("5 级评论比例:", (what_lever[5] / what_lever["All"]))
     print("6 级评论比例:", (what_lever[6] / what_lever["All"]))
 
-    print("-" * 30)
+    # print("-" * 30)
 
 
 def db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
@@ -1024,7 +1039,7 @@ def db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db
 
         pass
 
-    print(what_lever)
+    # print(what_lever)
 
     print("-" * 30)
 
@@ -1039,7 +1054,7 @@ def db_get_what_gend(db_host="localhost", db_user="root", db_password="root", db
     print("女 评论比例:", (what_lever["女"] / what_lever["All"]))
     print("保密 评论比例:", (what_lever["保密"] / what_lever["All"]))
 
-    print("-" * 30)
+    # print("-" * 30)
 
 
 def save_data_cb(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
