@@ -70,6 +70,9 @@ class Lang:
         # lc_bre_11 =
         # lc_bre_12 =
 
+
+
+
         lc_uit_01 = "Welcome! Please select a mode! "
         lc_uit_02 = "|Comments of a single video:p|Videos of a single user:v|Users followed by the user:f| "
         lc_uit_03 = "|Save the comment of the form: s|Analyze the content of the form: r|Quit and del cache: o| "
@@ -286,7 +289,7 @@ def data_process_and_save(data_file_tag):   # 这个函数是分析数据把数�
             Gender, Bio, UID, Level, SayWhat, ULike, SayTime, FileTag) \
                 VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % \
                     (table_name, data_username, data_gender, data_bio, data_uid, data_level,
-                     data_say_what, data_u_like, data_say_time, data_file_tag)
+                    data_say_what, data_u_like, data_say_time, data_file_tag)
 
         try:        # 尝试运行。
 
@@ -708,9 +711,9 @@ def boot_func():
         print("下面是表", table_name, "的统计:")
 
         db_get_what_leve(db_host=database_host, db_user=database_user, db_password=database_password,
-                         db_database=database_database, table_name=table_name)
+                        db_database=database_database, table_name=table_name)
         db_get_what_gend(db_host=database_host, db_user=database_user, db_password=database_password,
-                         db_database=database_database, table_name=table_name)
+                        db_database=database_database, table_name=table_name)
 
         print("-" * 30)
 
@@ -777,10 +780,10 @@ def boot_func():
 def need_help(is_return=False):  # 帮助！
 
     f_list = ["乌干达", "刚果", "坦桑尼亚", "赤道几内亚", "阿富汗", "阿塞拜疆", "缅甸", "挪威", "朝鲜",
-              "不丹", "保加利亚", "中国", "乍得", "古巴", "加拿大", "海地", "伊朗", "印度",
-              "丹麦", "埃塞俄比亚", "日本", "立陶宛", "墨西哥", "波兰", "卡塔尔", "俄罗斯", "罗马尼亚", "南非",
-              "瑞士", "叙利亚", "泰国", "美国", "英国", "阿联酋", "越南", "梵蒂冈", "赞比亚", "津巴布韦", "香港",
-              "台湾", "索科特拉岛", "南极", "法属圭亚那", "百慕大", "车臣"]
+            "不丹", "保加利亚", "中国", "乍得", "古巴", "加拿大", "海地", "伊朗", "印度",
+            "丹麦", "埃塞俄比亚", "日本", "立陶宛", "墨西哥", "波兰", "卡塔尔", "俄罗斯", "罗马尼亚", "南非",
+            "瑞士", "叙利亚", "泰国", "美国", "英国", "阿联酋", "越南", "梵蒂冈", "赞比亚", "津巴布韦", "香港",
+            "台湾", "索科特拉岛", "南极", "法属圭亚那", "百慕大", "车臣"]
 
     day_time = int(time.strftime("%m%d", time.localtime()))
 
@@ -795,8 +798,8 @@ def need_help(is_return=False):  # 帮助！
     else:
 
         s_list = ["可怜儿童", "少数群体", "国家官员", "民间组织", "残疾警官", "跨性别者", "同性恋者", "异性恋者", "无性恋者", "双性恋者",
-                  "知识分子", "社会精英", "政治领袖", "非洲移民", "亚洲移民", "美洲移民", "欧洲移民", "基督教徒", "天主教徒", "道教教徒",
-                  "回教教徒", "无产阶级", "底层农民", "游击队员", "民主人士", "技术工人"]
+                "知识分子", "社会精英", "政治领袖", "非洲移民", "亚洲移民", "美洲移民", "欧洲移民", "基督教徒", "天主教徒", "道教教徒",
+                "回教教徒", "无产阶级", "底层农民", "游击队员", "民主人士", "技术工人"]
 
     main_str = "帮助%s的%s！" % (f_list[random.randint(0, len(f_list) - 1)], s_list[random.randint(0, len(s_list) - 1)])
 
@@ -905,7 +908,7 @@ def db_get_full(db_host="localhost", db_user="root", db_password="root", db_data
 
 def db_get_comm(db_host="localhost", db_user="root", db_password="root", db_database="PyTest", table_name="bilcome"):
 
-    temp_data_list = []  # 把获得到的所有数据存在这个列表里。
+    temp_data_list = []  # 把获得到的所有数据存到这个列表里。
 
     database_results = db_get_full(db_host=db_host, db_user=db_user, db_password=db_password, db_database=db_database, table_name=table_name)
 
