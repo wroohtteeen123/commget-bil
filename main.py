@@ -30,6 +30,8 @@ from tkinter import *
 lang_set = "cn"
 
 
+
+
 class Lang:
 
     if lang_set == "en":
